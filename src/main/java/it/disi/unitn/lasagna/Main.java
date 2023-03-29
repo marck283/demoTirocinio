@@ -105,6 +105,7 @@ public class Main {
                     }
                 }
 
+                //Perché, da qui in poi, ci sono multiple FileNotFoundException?
                 final FFMpegBuilder builder = new FFMpegBuilder(command);
                 TracksMerger unitnMerger;
                 for(i = 0; i < numAudioFiles; i++) {
