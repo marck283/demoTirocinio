@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+plugins {
+    id 'java'
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
+    id 'application'
+}
+
+application {
+    mainClassName = 'it.disi.unitn.lasagna.Main'
+}
+
+group 'it.disi.unitn.lasagna'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "artifactregistry://europe-west8-maven.pkg.dev/tirocinio-380209/ffmpeg-java"
+    }
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "it.disi.unitn.lasagna.Main"
+        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    implementation platform('com.google.cloud:libraries-bom:26.10.0')
+
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+
+    implementation 'org.slf4j:slf4j-api:1.7.5'
+    implementation ('com.google.cloud:google-cloud-texttospeech:2.13.0')
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.6-beta5'
+    implementation 'org.burningwave:core:12.62.6'
+    implementation 'ai.djl:api:0.21.0'
+    runtimeOnly 'ai.djl.pytorch:pytorch-model-zoo:0.21.0'
+    runtimeOnly "ai.djl.pytorch:pytorch-native-auto:1.8.1"
+}
+
+test {
+    useJUnitPlatform()
+}
