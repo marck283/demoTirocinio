@@ -24,7 +24,8 @@ public class File extends java.io.File {
 
         boolean created = false;
         for(File path: dirPaths) {
-            //Perché qui non posso creare nessuna delle cartelle richieste?
+            //Perché qui (sui sistemi Linux) non posso creare
+            //nessuna delle cartelle richieste?
             created = path.mkdirs();
             System.err.println(created);
         }
