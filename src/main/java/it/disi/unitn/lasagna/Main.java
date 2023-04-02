@@ -66,7 +66,9 @@ public class Main {
             if(osName == null) {
                 throw new UnsupportedOperatingSystemException();
             }
-            boolean created = File.makeDirs(osName, audioDir, directory, videoDir, partial);
+            boolean created = File.makeDirs(osName, "src/main/resources/it/disi/unitn/output",
+                    partial) && File.makeDirs(osName, "src/main/resources/it/disi/unitn/input", audioDir,
+                    directory, videoDir);
 
             if(!created) {
                 Locale locale = Locale.getDefault();
@@ -192,6 +194,8 @@ public class Main {
             System.err.println(ex.getMessage());
         } catch (UnsupportedOperatingSystemException ex) {
             System.err.println(ex.getMessage());
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 }
