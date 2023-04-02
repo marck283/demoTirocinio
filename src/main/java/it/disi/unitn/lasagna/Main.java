@@ -61,7 +61,12 @@ public class Main {
                     directory = new File("./src/main/resources/it/disi/unitn/input/images"),
                     videoDir = new File("./src/main/resources/it/disi/unitn/input/video"),
                     partial = new File("./src/main/resources/it/disi/unitn/output/partial");
-            boolean created = File.makeDirs(audioDir, directory, videoDir, partial);
+
+            String osName = SystemUtils.OS_NAME;
+            if(osName == null) {
+                throw new UnsupportedOperatingSystemException();
+            }
+            boolean created = File.makeDirs(osName, audioDir, directory, videoDir, partial);
 
             if(!created) {
                 Locale locale = Locale.getDefault();
@@ -70,8 +75,21 @@ public class Main {
                             "creata. Al fine di sistemare il problema, l'utente si assicuri di aver fornito al programma i" +
                             "permessi di scrittura e di creazione di cartelle.");
                 } else {
+                    System.err.print("Path: ");
+                    if(!audioDir.exists()) {
+                        System.err.println(audioDir.getPath());
+                    }
+                    if(!directory.exists()) {
+                        System.err.println(directory.getPath());
+                    }
+                    if(!videoDir.exists()) {
+                        System.err.println(videoDir.getPath());
+                    }
+                    if(!partial.exists()) {
+                        System.err.println(partial.getPath());
+                    }
                     System.err.println("At least one necessary folder was not created. In order to fix the problem, the" +
-                            "user should check that the program has file-writing and folder creation permissions.");
+                            " user should check that the program has file-writing and folder creation permissions.");
                 }
                 System.exit(1);
             }
@@ -105,7 +123,7 @@ public class Main {
                     }
                 }
 
-                //Perché, da qui in poi, ci sono multiple FileNotFoundException?
+                //Perché, da qui in poi, ci sono multiple FileNotFoundException su WSL?
                 final FFMpegBuilder builder = new FFMpegBuilder(command);
                 TracksMerger unitnMerger;
                 for(i = 0; i < numAudioFiles; i++) {
@@ -136,6 +154,13 @@ public class Main {
                     process.executeCMD(1L, TimeUnit.MINUTES);
                 }
 
+                /*File file = new File("./inputText.txt");
+                boolean canWrite = file.setWritable(true);
+                System.out.println("Can write: " + canWrite);
+                if(!canWrite) {
+                    throw new IOException("Non e' possibile scrivere su file.");
+                }*/
+
                 File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
                 java.io.File[] fileList = outputDir.listFiles();
 
@@ -164,6 +189,8 @@ public class Main {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.err.println(ex.getMessage());
+        } catch (UnsupportedOperatingSystemException ex) {
             System.err.println(ex.getMessage());
         }
     }

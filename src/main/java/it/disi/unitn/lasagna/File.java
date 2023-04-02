@@ -11,8 +11,8 @@ public class File extends java.io.File {
         super(pathname);
     }
 
-    public static boolean makeDirs(@NotNull File @NotNull ... dirPaths) throws IllegalArgumentException {
-        if(dirPaths == null) {
+    public static boolean makeDirs(@NotNull String osName, @NotNull File @NotNull ... dirPaths) throws IllegalArgumentException {
+        if(osName == null || dirPaths == null) {
             throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
         }
 
@@ -24,8 +24,12 @@ public class File extends java.io.File {
 
         boolean created = false;
         for(File path: dirPaths) {
+            //Perché qui non posso creare nessuna delle cartelle richieste?
             created = path.mkdirs();
+            System.err.println(created);
         }
+
+        System.err.println(created);
 
         return created;
     }
