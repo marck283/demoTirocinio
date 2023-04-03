@@ -62,7 +62,7 @@ public class Main {
                     videoDir = new File("./src/main/resources/it/disi/unitn/input/video"),
                     partial = new File("./src/main/resources/it/disi/unitn/output/partial");
 
-            String osName = SystemUtils.OS_NAME;
+            /*String osName = SystemUtils.OS_NAME;
             if(osName == null) {
                 throw new UnsupportedOperatingSystemException();
             }
@@ -94,7 +94,7 @@ public class Main {
                             " user should check that the program has file-writing and folder creation permissions.");
                 }
                 System.exit(1);
-            }
+            }*/
 
             int i = 0, numAudioFiles;
             for(JsonElement e: json.getAsJsonArray("array")) {
@@ -192,10 +192,10 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
             System.err.println(ex.getMessage());
-        } catch (UnsupportedOperatingSystemException ex) {
+        } /*catch (UnsupportedOperatingSystemException ex) {
             System.err.println(ex.getMessage());
         } catch (InterruptedException ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 }
