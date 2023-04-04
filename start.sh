@@ -1,6 +1,10 @@
 #!/bin/bash
 
-GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credentials.json"
+#NOTA: la creazione di cartelle in un sistema Linux non dovrebbe essere permessa per utenti che non possono eseguire
+#comandi bash con privilegi elevati, quindi, prima di eseguire questo script, l'utente si deve assicurare di poter eseguire
+#tali comandi.
+
+export GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credentials.json"
 
 #Uno dei file JAR delle dipendenze di questo applicativo è firmato con una firma differente
 #da quella del JAR di questo applicativo, quindi, prima di eseguirlo, devo rimuovere tutti
@@ -8,9 +12,14 @@ GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credentials.json"
 #sudo zip -d ./build/install/tirocinio/lib/tirocinio-1.0.jar 'META-INF/.SF' 'META-INF/.RSA' 'META-INF/*SF'
 
 #Creo le cartelle e i file necessari qui per non avere problemi con il sistema operativo.
-sudo mkdir -p "./src/main/resources/it/disi/unitn/input/audio"
-sudo mkdir -p "./src/main/resources/it/disi/unitn/input/images"
-sudo mkdir -p "./src/main/resources/it/disi/unitn/input/video"
-sudo mkdir -p "./src/main/resources/it/disi/unitn/output/partial"
-sudo touch "./inputFile.txt" #Modifica il timestamp del file inputFile.txt, creandolo se necessario.
+mkdir -p "./src/main/resources/it/disi/unitn/input/audio"
+chmod +w "./src/main/resources/it/disi/unitn/input/audio"
+mkdir -p "./src/main/resources/it/disi/unitn/input/images"
+chmod +w "./src/main/resources/it/disi/unitn/input/images"
+mkdir -p "./src/main/resources/it/disi/unitn/input/video"
+chmod +w "./src/main/resources/it/disi/unitn/input/video"
+mkdir -p "./src/main/resources/it/disi/unitn/output/partial"
+chmod +w "./src/main/resources/it/disi/unitn/output/partial"
+chmod +w "./src/main/resources/it/disi/unitn/output"
+touch "./inputFile.txt" #Modifica il timestamp del file inputFile.txt, creandolo se necessario.
 java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar

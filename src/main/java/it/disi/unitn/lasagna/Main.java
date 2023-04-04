@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import it.disi.unitn.lasagna.exceptions.UnsupportedOperatingSystemException;
+import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,13 +62,16 @@ public class Main {
                     partial = new File("./src/main/resources/it/disi/unitn/output/partial");
 
             final String command;
+            String ffmpegFilePath;
 
             if(SystemUtils.IS_OS_WINDOWS) {
                 command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
                 File.makeDirs(SystemUtils.OS_NAME, audioDir, directory, videoDir, partial);
             } else {
                 if(SystemUtils.IS_OS_LINUX) {
                     command = "ffmpeg";
+                    ffmpegFilePath = null;
                 } else {
                     throw new UnsupportedOperatingSystemException();
                 }
@@ -93,15 +96,19 @@ public class Main {
             if(!directory.exists() || !videoDir.exists()) {
                 throw new IOException("Almeno una delle due immagini non e' stata creata");
             } else {
-                System.out.println(directory.getPath());
-                System.out.println(videoDir.getPath());
+                File file = new File(imagesFolderPath + "/000.png"), file1 = new File(imagesFolderPath
+                        + "/001.png");
+                System.out.println(file.exists());
+                System.out.println(file.canRead());
+                System.out.println(file1.exists());
+                System.out.println(file1.canRead());
             }
 
             try {
                 final FFMpegBuilder builder = new FFMpegBuilder(command);
                 TracksMerger unitnMerger;
                 for(i = 0; i < numAudioFiles; i++) {
-                    builder.setCommand(command);
+                    builder.resetCommand(ffmpegFilePath);
 
                     String fileName = padStart(String.valueOf(i));
                     VideoCreator creator = builder.newVideoCreator(videoDir.getPath() + "/" +
@@ -112,10 +119,13 @@ public class Main {
                     creator.setVideoQuality(18);
                     creator.createCommand();
 
+                    File file = new File(imagesFolderPath + "/" + fileName + ".png");
+                    System.out.println(file.exists());
+
                     FFMpeg creationProcess = builder.build();
                     creationProcess.executeCMD(30L, TimeUnit.SECONDS);
 
-                    builder.setCommand(command);
+                    builder.resetCommand(ffmpegFilePath);
 
                     File inputVideoFile = new File("./src/main/resources/it/disi/unitn/input/video/"
                             + fileName + ".mp4"),
@@ -145,7 +155,8 @@ public class Main {
                     filePathList.add(fileList[i].getPath());
                 }
 
-                builder.setCommand(command);
+                //builder.setCommand(command);
+                builder.resetCommand(ffmpegFilePath);
                 unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
                 unitnMerger.streamCopy(true);
                 unitnMerger.mergeVideos(filePathList);
@@ -153,10 +164,12 @@ public class Main {
                 FFMpeg process = builder.build();
                 process.executeCMD(1L, TimeUnit.MINUTES);
 
-                //File.removeDirs(audioDir, videoDir, directory, partial);
+                File.removeDirs(audioDir, videoDir, directory, partial);
             } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getMessage());
+            } catch (UnsupportedOperatingSystemException e) {
+                throw new RuntimeException(e);
             }
         } catch (IOException | UnsupportedOperatingSystemException ex) {
             ex.printStackTrace();
