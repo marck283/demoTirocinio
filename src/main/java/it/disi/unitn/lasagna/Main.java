@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import it.disi.unitn.lasagna.exceptions.UnsupportedOperatingSystemException;
@@ -62,39 +61,18 @@ public class Main {
                     videoDir = new File("./src/main/resources/it/disi/unitn/input/video"),
                     partial = new File("./src/main/resources/it/disi/unitn/output/partial");
 
-            /*String osName = SystemUtils.OS_NAME;
-            if(osName == null) {
-                throw new UnsupportedOperatingSystemException();
-            }
-            boolean created = File.makeDirs(osName, "src/main/resources/it/disi/unitn/output",
-                    partial) && File.makeDirs(osName, "src/main/resources/it/disi/unitn/input", audioDir,
-                    directory, videoDir);
+            final String command;
 
-            if(!created) {
-                Locale locale = Locale.getDefault();
-                if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
-                    System.err.println("Almeno una cartella temporanea necessaria per l'esecuzione del programma non è stata" +
-                            "creata. Al fine di sistemare il problema, l'utente si assicuri di aver fornito al programma i" +
-                            "permessi di scrittura e di creazione di cartelle.");
+            if(SystemUtils.IS_OS_WINDOWS) {
+                command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                File.makeDirs(SystemUtils.OS_NAME, audioDir, directory, videoDir, partial);
+            } else {
+                if(SystemUtils.IS_OS_LINUX) {
+                    command = "ffmpeg";
                 } else {
-                    System.err.print("Path: ");
-                    if(!audioDir.exists()) {
-                        System.err.println(audioDir.getPath());
-                    }
-                    if(!directory.exists()) {
-                        System.err.println(directory.getPath());
-                    }
-                    if(!videoDir.exists()) {
-                        System.err.println(videoDir.getPath());
-                    }
-                    if(!partial.exists()) {
-                        System.err.println(partial.getPath());
-                    }
-                    System.err.println("At least one necessary folder was not created. In order to fix the problem, the" +
-                            " user should check that the program has file-writing and folder creation permissions.");
+                    throw new UnsupportedOperatingSystemException();
                 }
-                System.exit(1);
-            }*/
+            }
 
             int i = 0, numAudioFiles;
             for(JsonElement e: json.getAsJsonArray("array")) {
@@ -112,28 +90,22 @@ public class Main {
             json2Image.addText(imagesFolderPath + "/000.png", "png", "Hello, world!",
                     100, 100, 30f, Color.BLACK);
 
+            if(!directory.exists() || !videoDir.exists()) {
+                throw new IOException("Almeno una delle due immagini non e' stata creata");
+            } else {
+                System.out.println(directory.getPath());
+                System.out.println(videoDir.getPath());
+            }
+
             try {
-                final String command;
-
-                if(SystemUtils.IS_OS_WINDOWS) {
-                    command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
-                } else {
-                    if(SystemUtils.IS_OS_LINUX) {
-                        command = "ffmpeg";
-                    } else {
-                        throw new UnsupportedOperatingSystemException();
-                    }
-                }
-
-                //Perché, da qui in poi, ci sono multiple FileNotFoundException su WSL?
                 final FFMpegBuilder builder = new FFMpegBuilder(command);
                 TracksMerger unitnMerger;
                 for(i = 0; i < numAudioFiles; i++) {
                     builder.setCommand(command);
 
                     String fileName = padStart(String.valueOf(i));
-                    VideoCreator creator = builder.newVideoCreator("\"./src/main/resources/it/disi/unitn/input/video/" +
-                                    fileName + ".mp4\"", imagesFolderPath, fileName + ".png");
+                    VideoCreator creator = builder.newVideoCreator(videoDir.getPath() + "/" +
+                                    fileName + ".mp4", imagesFolderPath, fileName + ".png");
                     creator.setVideoSize(800, 600);
                     creator.setFrameRate(1);
                     creator.setCodecID("libx264");
@@ -145,9 +117,15 @@ public class Main {
 
                     builder.setCommand(command);
 
-                    String inputVideo = "\"./src/main/resources/it/disi/unitn/input/video/" + fileName + ".mp4\"",
-                    inputAudio = "\"./src/main/resources/it/disi/unitn/input/audio/" + fileName + ".mp3\"",
-                    outputVideo = "\"./src/main/resources/it/disi/unitn/output/partial/" + fileName + ".mp4\"";
+                    File inputVideoFile = new File("./src/main/resources/it/disi/unitn/input/video/"
+                            + fileName + ".mp4"),
+                    inputAudioFile = new File("./src/main/resources/it/disi/unitn/input/audio/"
+                            + fileName + ".mp3"),
+                    outputVideoFile = new File("./src/main/resources/it/disi/unitn/output/partial/"
+                            + fileName + ".mp4");
+                    String inputVideo = inputVideoFile.getPath(),
+                    inputAudio = inputAudioFile.getPath(),
+                    outputVideo = outputVideoFile.getPath();
                     unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
                     unitnMerger.streamCopy(true);
                     unitnMerger.mergeAudioWithVideo();
@@ -155,13 +133,6 @@ public class Main {
                     FFMpeg process = builder.build();
                     process.executeCMD(1L, TimeUnit.MINUTES);
                 }
-
-                /*File file = new File("./inputText.txt");
-                boolean canWrite = file.setWritable(true);
-                System.out.println("Can write: " + canWrite);
-                if(!canWrite) {
-                    throw new IOException("Non e' possibile scrivere su file.");
-                }*/
 
                 File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
                 java.io.File[] fileList = outputDir.listFiles();
@@ -182,20 +153,14 @@ public class Main {
                 FFMpeg process = builder.build();
                 process.executeCMD(1L, TimeUnit.MINUTES);
 
-                File.removeDirs(audioDir, videoDir, directory, partial);
+                //File.removeDirs(audioDir, videoDir, directory, partial);
             } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getMessage());
-            } catch (UnsupportedOperatingSystemException ex) {
-                System.err.println(ex.getMessage());
             }
-        } catch (IOException ex) {
+        } catch (IOException | UnsupportedOperatingSystemException ex) {
             ex.printStackTrace();
             System.err.println(ex.getMessage());
-        } /*catch (UnsupportedOperatingSystemException ex) {
-            System.err.println(ex.getMessage());
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }*/
+        }
     }
 }

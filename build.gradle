@@ -11,6 +11,7 @@ plugins {
     id 'java'
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 application {
@@ -39,6 +40,13 @@ jar {
     }
 }
 
+// Output to build/libs folder
+shadowJar {
+    archiveBaseName.set('tirocinio-shadow')
+    archiveClassifier.set('')
+    archiveVersion.set('1.0')
+}
+
 dependencies {
     implementation 'org.jetbrains:annotations:23.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
@@ -50,7 +58,7 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.13.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.6-beta7'
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.6-beta9'
     implementation 'org.burningwave:core:12.62.6'
     implementation 'ai.djl:api:0.21.0'
     runtimeOnly 'ai.djl.pytorch:pytorch-model-zoo:0.21.0'
