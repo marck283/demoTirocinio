@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class Audio {
+class Audio {
     private TextToSpeechClient textToSpeechClient;
     private SynthesisInput input;
     private VoiceSelectionParams voice;
