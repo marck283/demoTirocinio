@@ -12,14 +12,5 @@ export GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credential
 #sudo zip -d ./build/install/tirocinio/lib/tirocinio-1.0.jar 'META-INF/.SF' 'META-INF/.RSA' 'META-INF/*SF'
 
 #Creo le cartelle e i file necessari qui per non avere problemi con il sistema operativo.
-mkdir -p "./src/main/resources/it/disi/unitn/input/audio"
-chmod +w "./src/main/resources/it/disi/unitn/input/audio"
-mkdir -p "./src/main/resources/it/disi/unitn/input/images"
-chmod +w "./src/main/resources/it/disi/unitn/input/images"
-mkdir -p "./src/main/resources/it/disi/unitn/input/video"
-chmod +w "./src/main/resources/it/disi/unitn/input/video"
-mkdir -p "./src/main/resources/it/disi/unitn/output/partial"
-chmod +w "./src/main/resources/it/disi/unitn/output/partial"
-chmod +w "./src/main/resources/it/disi/unitn/output"
 touch "./inputFile.txt" #Modifica il timestamp del file inputFile.txt, creandolo se necessario.
 java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar
