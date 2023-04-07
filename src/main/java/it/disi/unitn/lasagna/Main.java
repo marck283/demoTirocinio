@@ -13,8 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
@@ -31,12 +29,11 @@ public class Main {
         try (Reader reader = Files.newBufferedReader(p)) {
             AudioGenerator generator = new AudioGenerator(reader);
 
-            String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
+            final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
                     directory = "./src/main/resources/it/disi/unitn/input/images",
                     videoDir = "./src/main/resources/it/disi/unitn/input/video",
-                    partial = "./src/main/resources/it/disi/unitn/output/partial";
-
-            final String command, ffmpegFilePath;
+                    partial = "./src/main/resources/it/disi/unitn/output/partial",
+                    command, ffmpegFilePath;
 
             if(SystemUtils.IS_OS_WINDOWS) {
                 command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
@@ -72,35 +69,20 @@ public class Main {
 
                     builder.resetCommand(ffmpegFilePath);
 
-                    File inputVideoFile = new File("./src/main/resources/it/disi/unitn/input/video/"
-                            + fileName + ".mp4"),
-                    inputAudioFile = new File("./src/main/resources/it/disi/unitn/input/audio/"
-                            + fileName + ".mp3"),
-                    outputVideoFile = new File("./src/main/resources/it/disi/unitn/output/partial/"
-                            + fileName + ".mp4");
-                    String inputVideo = inputVideoFile.getPath(),
-                    inputAudio = inputAudioFile.getPath(),
-                    outputVideo = outputVideoFile.getPath();
+                    String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + ".mp4",
+                    inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + ".mp3",
+                    outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + ".mp4";
                     unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
                     unitnMerger.streamCopy(true);
                     unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                 }
 
                 File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
-                java.io.File[] fileList = outputDir.listFiles();
-
-                if(fileList == null) {
-                    throw new FileNotFoundException("Il percorso fornito non denota una directory.");
-                }
-                List<String> filePathList = new ArrayList<>();
-                for(i = 0; i < fileList.length; i++) {
-                    filePathList.add(fileList[i].getPath());
-                }
 
                 builder.resetCommand(ffmpegFilePath);
                 unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
                 unitnMerger.streamCopy(true);
-                unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, filePathList);
+                unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, outputDir.getFileList());
 
                 File.removeDirs(audioDir, videoDir, directory, partial);
             } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |

@@ -5,8 +5,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class File extends java.io.File {
 
@@ -61,6 +63,12 @@ public class File extends java.io.File {
         System.err.println(created);
     }
 
+    /**
+     * Questo metodo rimuove le cartelle associate ai path comunicati come argomenti.
+     * @param dirPaths I path che denotano le cartelle da eliminare. Nessuno di questi argomenti può essere null.
+     * @throws IllegalArgumentException Quando almeno un argomento è null
+     * @throws IOException se occorre un errore I/O
+     */
     public static void removeDirs(@NotNull String @NotNull ... dirPaths) throws IllegalArgumentException, IOException {
         if(dirPaths == null) {
             throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
@@ -77,5 +85,29 @@ public class File extends java.io.File {
             FileUtils.cleanDirectory(file);
             file.delete();
         }
+    }
+
+    /**
+     * Questo metodo permette di ottenere una lista dei path dei file interni alla cartella identificata da questa
+     * istanza di File.
+     * @return La lista dei path dei file interni alla cartella associata a questa istanza di File
+     * @throws FileNotFoundException Se il percorso fornito non denota una directory
+     */
+    public List<String> getFileList() throws FileNotFoundException {
+        if(!isDirectory()) {
+            throw new FileNotFoundException("Il percorso fornito non denota una directory.");
+        }
+
+        java.io.File[] fileList = listFiles();
+        if(fileList == null) {
+            throw new FileNotFoundException("Il percorso fornito non denota una directory.");
+        }
+
+        List<String> filePathList = new ArrayList<>();
+        for (java.io.File file : fileList) {
+            filePathList.add(file.getPath());
+        }
+
+        return filePathList;
     }
 }
