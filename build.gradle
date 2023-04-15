@@ -58,11 +58,8 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.7-beta1'
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.7-beta2'
     implementation 'org.burningwave:core:12.62.6'
-    implementation 'ai.djl:api:0.21.0'
-    runtimeOnly 'ai.djl.pytorch:pytorch-model-zoo:0.21.0'
-    runtimeOnly "ai.djl.pytorch:pytorch-native-auto:1.8.1"
 
 }
 

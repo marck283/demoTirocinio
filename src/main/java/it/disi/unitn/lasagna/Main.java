@@ -47,7 +47,10 @@ public class Main {
             int i = generator.generateAudio(), numAudioFiles = i;
 
             JSONToImage json2Image = new JSONToImage(f.getPath());
-            json2Image.generate("png", directory);
+            json2Image.generate(directory);
+
+            //Questa riga è da correggere modificando il modo in cui il nome del file e il nome del formato vengono
+            //comunicati al metodo.
             json2Image.addText(directory + "/000.png", "png", "Hello, world!",
                     100, 100, 30f, Color.BLACK);
 

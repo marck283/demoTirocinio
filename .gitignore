@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 lib/
 jdk-19_linux-x64_bin.deb
+inputFile.txt
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
