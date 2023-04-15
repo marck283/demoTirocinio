@@ -22,80 +22,92 @@ import org.apache.commons.lang3.SystemUtils;
 public class Main {
 
     public static void main(String[] args) {
-        File f = new File("./src/main/resources/it/disi/unitn/input/json/imageArray.json");
-
-        //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
-        Path p = f.toPath().toAbsolutePath();
-        try (Reader reader = Files.newBufferedReader(p)) {
-            AudioGenerator generator = new AudioGenerator(reader);
-
-            final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
-                    directory = "./src/main/resources/it/disi/unitn/input/images",
-                    videoDir = "./src/main/resources/it/disi/unitn/input/video",
-                    partial = "./src/main/resources/it/disi/unitn/output/partial",
-                    command, ffmpegFilePath;
-
-            if(SystemUtils.IS_OS_WINDOWS) {
-                command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
-                ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+        if(args == null || args.length != 1 || args[0] == null) {
+            if(args == null) {
+                System.err.println("args NULL");
             } else {
-                command = "ffmpeg";
-                ffmpegFilePath = null;
+                System.err.println("Length: " + args.length);
             }
-            File.makeDirs(audioDir, directory, videoDir, partial);
+            System.err.println("Il numero di argomenti forniti a questo programma non puo' essere" +
+                    " diverso da 1. Si ricordi che il primo argomento fornito deve essere il percorso del file JSON" +
+                    " contenente le informazioni sulle immagini da produrre e, per ogni immagine, il linguaggio" +
+                    " e la descrizione da utilizzare per la produzione dell'audio.");
+        } else {
+            File f = new File(args[0]);
 
-            int i = generator.generateAudio(), numAudioFiles = i;
+            //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
+            Path p = f.toPath().toAbsolutePath();
+            try (Reader reader = Files.newBufferedReader(p)) {
+                AudioGenerator generator = new AudioGenerator(reader);
 
-            JSONToImage json2Image = new JSONToImage(f.getPath());
-            json2Image.generate(directory);
+                final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
+                        directory = "./src/main/resources/it/disi/unitn/input/images",
+                        videoDir = "./src/main/resources/it/disi/unitn/input/video",
+                        partial = "./src/main/resources/it/disi/unitn/output/partial",
+                        command, ffmpegFilePath;
 
-            //Questa riga è da correggere modificando il modo in cui il nome del file e il nome del formato vengono
-            //comunicati al metodo.
-            json2Image.addText(directory + "/000.png", "png", "Hello, world!",
-                    100, 100, 30f, Color.BLACK);
-
-            try {
-                final FFMpegBuilder builder = new FFMpegBuilder(command);
-                TracksMerger unitnMerger;
-                for(i = 0; i < numAudioFiles; i++) {
-                    builder.resetCommand(ffmpegFilePath);
-
-                    StringExt string = new StringExt(String.valueOf(i));
-                    String fileName = string.padStart();
-                    VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
-                                    fileName + ".mp4", directory, fileName + ".png");
-                    creator.setVideoSize(800, 600);
-                    creator.setFrameRate(1);
-                    creator.setCodecID("libx264");
-                    creator.setVideoQuality(18);
-                    creator.createCommand(30L, TimeUnit.SECONDS);
-
-                    builder.resetCommand(ffmpegFilePath);
-
-                    String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + ".mp4",
-                    inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + ".mp3",
-                    outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + ".mp4";
-                    unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
-                    unitnMerger.streamCopy(true);
-                    unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
+                if(SystemUtils.IS_OS_WINDOWS) {
+                    command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                    ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                } else {
+                    command = "ffmpeg";
+                    ffmpegFilePath = null;
                 }
+                File.makeDirs(audioDir, directory, videoDir, partial);
 
-                File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
+                int i = generator.generateAudio(), numAudioFiles = i;
 
-                builder.resetCommand(ffmpegFilePath);
-                unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
-                unitnMerger.streamCopy(true);
-                unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, outputDir.getFileList());
+                JSONToImage json2Image = new JSONToImage(f.getPath());
+                json2Image.generate(directory);
 
-                File.removeDirs(audioDir, videoDir, directory, partial);
-            } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
-                     UnsupportedOperatingSystemException ex) {
+                //Questa riga è da correggere modificando il modo in cui il nome del file e il nome del formato vengono
+                //comunicati al metodo.
+                json2Image.addText(directory + "/000.png", "png", "Hello, world!",
+                        100, 100, 30f, Color.BLACK);
+
+                try {
+                    final FFMpegBuilder builder = new FFMpegBuilder(command);
+                    TracksMerger unitnMerger;
+                    for(i = 0; i < numAudioFiles; i++) {
+                        builder.resetCommand(ffmpegFilePath);
+
+                        StringExt string = new StringExt(String.valueOf(i));
+                        String fileName = string.padStart();
+                        VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
+                                fileName + ".mp4", directory, fileName + ".png");
+                        creator.setVideoSize(800, 600);
+                        creator.setFrameRate(1);
+                        creator.setCodecID("libx264");
+                        creator.setVideoQuality(18);
+                        creator.createCommand(30L, TimeUnit.SECONDS);
+
+                        builder.resetCommand(ffmpegFilePath);
+
+                        String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + ".mp4",
+                                inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + ".mp3",
+                                outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + ".mp4";
+                        unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
+                        unitnMerger.streamCopy(true);
+                        unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
+                    }
+
+                    File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
+
+                    builder.resetCommand(ffmpegFilePath);
+                    unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
+                    unitnMerger.streamCopy(true);
+                    unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, outputDir.getFileList());
+
+                    File.removeDirs(audioDir, videoDir, directory, partial);
+                } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
+                         UnsupportedOperatingSystemException ex) {
+                    ex.printStackTrace();
+                    System.err.println(ex.getMessage());
+                }
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getMessage());
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.println(ex.getMessage());
         }
     }
 }
