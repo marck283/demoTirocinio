@@ -13,4 +13,4 @@ export GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credential
 
 #Creo le cartelle e i file necessari qui per non avere problemi con il sistema operativo.
 touch "./inputFile.txt" #Modifica il timestamp del file inputFile.txt, creandolo se necessario.
-java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar
+java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar $1

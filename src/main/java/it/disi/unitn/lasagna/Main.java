@@ -1,5 +1,6 @@
 package it.disi.unitn.lasagna;
 
+import com.google.gson.*;
 import it.disi.unitn.FFMpegBuilder;
 import it.disi.unitn.TracksMerger;
 import it.disi.unitn.VideoCreator;
@@ -60,10 +61,28 @@ public class Main {
                 JSONToImage json2Image = new JSONToImage(f.getPath());
                 json2Image.generate(directory);
 
-                //Questa riga è da correggere modificando il modo in cui il nome del file e il nome del formato vengono
+                //Queste righe sono da correggere modificando il modo in cui il nome del file e il nome del formato vengono
                 //comunicati al metodo.
-                json2Image.addText(directory + "/000.png", "png", "Hello, world!",
-                        100, 100, 30f, Color.BLACK);
+                //Inoltre bisognerebbe anche permettere la modifica di TUTTE le immagini acquisendo i dati dall'array
+                //"inputText" all'interno dei dati di ogni immagine.
+                Gson gson = new GsonBuilder().create();
+                JsonArray array = gson.fromJson(reader, JsonObject.class).get("array").getAsJsonArray();
+                int i1 = 0;
+                for(JsonElement e: array) {
+                    JsonObject obj = e.getAsJsonObject();
+                    JsonArray imageText = obj.getAsJsonArray("inputText");
+
+                    StringExt sext = new StringExt(String.valueOf(i1));
+                    sext.padStart();
+                    for(JsonElement e1: imageText) {
+                        JsonObject textInfo = e1.getAsJsonObject();
+                        String text = textInfo.get("text").getAsString();
+
+                        JsonObject position = textInfo.getAsJsonObject("position");
+                        json2Image.addText(directory + "/" + sext, "png", text,
+                                position.get("x").getAsInt(), position.get("y").getAsInt(), 30f, Color.BLACK);
+                    }
+                }
 
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);

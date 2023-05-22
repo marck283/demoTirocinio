@@ -10,11 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Reader;
 
 public class AudioGenerator {
-    private final Gson gson;
     private final JsonObject json;
 
     public AudioGenerator(@NotNull Reader reader) {
-        gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().create();
         json = gson.fromJson(reader, JsonObject.class);
     }
 

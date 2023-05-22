@@ -27,6 +27,17 @@ repositories {
     maven {
         url "artifactregistry://europe-west8-maven.pkg.dev/tirocinio-380209/ffmpeg-java"
     }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url 'https://mlt.jfrog.io/artifactory/mlt-mvn-releases-local'
+            }
+        }
+        filter {
+            includeGroup 'de.dfki.lt.jtok'
+        }
+    }
 }
 
 jar {
@@ -55,6 +66,7 @@ dependencies {
 
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.apache.commons:commons-lang3:3.8.1'
+    implementation 'commons-cli:commons-cli:1.5.0'
 
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
