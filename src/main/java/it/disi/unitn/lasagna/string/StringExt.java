@@ -14,7 +14,7 @@ public class StringExt {
         val = str;
     }
 
-    public String padStart() throws InvalidArgumentException {
+    public void padStart() throws InvalidArgumentException {
         if(val.length() == 0 || val.length() > 3) {
             throw new InvalidArgumentException("The argument's length is not greater than 0 and less than or equal to 3.");
         }
@@ -27,7 +27,9 @@ public class StringExt {
             }
             val = valBuilder.toString();
         }
+    }
 
+    public String getVal() {
         return val;
     }
 }

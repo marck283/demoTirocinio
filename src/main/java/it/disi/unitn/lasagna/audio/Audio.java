@@ -35,14 +35,13 @@ class Audio {
 
             // Write the response to the output file.
             StringExt val = new StringExt(String.valueOf(index));
+            val.padStart();
             try (OutputStream out = new FileOutputStream("./src/main/resources/it/disi/unitn/input/audio/" +
-                    val.padStart() + ".mp3")) {
+                    val.getVal() + ".mp3")) {
                 out.write(response.getAudioContent().toByteArray());
                 System.out.println("Audio content written to file \"input.mp3\"");
             } catch (IOException e) {
                 System.err.println(e.getMessage());
-            } catch (InvalidArgumentException e) {
-                e.printStackTrace();
             }
     }
 
