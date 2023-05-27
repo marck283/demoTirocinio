@@ -5,6 +5,9 @@
 #tali comandi.
 
 export GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credentials.json"
+if [ ! -f $GOOGLE_APPLICATION_CREDENTIALS ]; then
+  echo "Errore: file application_default_credentials.json non esistente.";
+fi
 
 #Uno dei file JAR delle dipendenze di questo applicativo è firmato con una firma differente
 #da quella del JAR di questo applicativo, quindi, prima di eseguirlo, devo rimuovere tutti
