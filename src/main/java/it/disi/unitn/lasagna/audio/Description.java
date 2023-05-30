@@ -16,7 +16,7 @@ class Description {
     @Contract("!null -> new")
     public static @Nullable Description parseJSON(@NotNull JsonObject json) {
         if(json != null) {
-            return new Description(json.get("language").getAsString(), json.get("description").getAsString());
+            return new Description(json.get("text-language").getAsString(), json.get("text-to-speech").getAsString());
         }
         return null;
     }

@@ -39,12 +39,16 @@ public class Main {
             try(Reader reader = Files.newBufferedReader(p)) {
                 Gson gson = new GsonBuilder().create();
                 JsonArray array = gson.fromJson(reader, JsonObject.class).get("array").getAsJsonArray();
-                AudioGenerator generator = new AudioGenerator(array);
                 final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
                         directory = "./src/main/resources/it/disi/unitn/input/images",
                         videoDir = "./src/main/resources/it/disi/unitn/input/video",
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
                         command, ffmpegFilePath;
+                File.makeDirs(audioDir, directory, videoDir, partial);
+                JSONToImage json2Image = new JSONToImage(f.getPath());
+                json2Image.generate(directory);
+
+                AudioGenerator generator = new AudioGenerator(array);
 
                 if (SystemUtils.IS_OS_WINDOWS) {
                     command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
@@ -53,13 +57,8 @@ public class Main {
                     command = "ffmpeg";
                     ffmpegFilePath = null;
                 }
-                File.makeDirs(audioDir, directory, videoDir, partial);
 
                 int i = generator.generateAudio(), numAudioFiles = i;
-
-                JSONToImage json2Image = new JSONToImage(f.getPath());
-                json2Image.generate(directory);
-
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
