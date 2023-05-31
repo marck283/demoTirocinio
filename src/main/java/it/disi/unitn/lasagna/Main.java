@@ -46,7 +46,11 @@ public class Main {
                         command, ffmpegFilePath;
                 File.makeDirs(audioDir, directory, videoDir, partial);
                 JSONToImage json2Image = new JSONToImage(f.getPath());
-                json2Image.generate(directory);
+                String imageExt = json2Image.generate(directory);
+                if(imageExt.equals("")) {
+                    System.err.println("Errore: nessuna immagine inserita.");
+                    System.exit(1);
+                }
 
                 AudioGenerator generator = new AudioGenerator(array);
 
@@ -69,7 +73,7 @@ public class Main {
                         string.padStart();
                         String fileName = string.getVal();
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
-                                fileName + ".mp4", directory, fileName + ".png");
+                                fileName + ".mp4", directory, fileName + "." + imageExt);
                         creator.setVideoSize(800, 600);
                         creator.setFrameRate(1);
                         creator.setCodecID("libx264");

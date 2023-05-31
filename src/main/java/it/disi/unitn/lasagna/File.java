@@ -34,11 +34,10 @@ public class File extends java.io.File {
             }
         }
 
-        boolean created = false;
         for(String path: dirPaths) {
             File file = new File(path);
             if(SystemUtils.IS_OS_WINDOWS) {
-                created = file.mkdirs();
+                file.mkdirs();
             } else {
                 if(SystemUtils.IS_OS_LINUX) {
                     ProcessBuilder builder = new ProcessBuilder("bash", "-c", "mkdir -p " + file.getPath() +
@@ -53,14 +52,11 @@ public class File extends java.io.File {
                         p.destroy(); //Kill the process to release resources
                         throw new Exception("An error has occurred.");
                     }
-                    created = true;
                 } else {
                     throw new UnsupportedOperatingSystemException();
                 }
             }
         }
-
-        System.err.println(created);
     }
 
     /**
