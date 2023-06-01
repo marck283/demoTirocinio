@@ -4,40 +4,35 @@
       {
         "name": "name1",
         "value": "value1",
-        "print": {
-          "x": 100,
-          "y": 100
-        }
+        "font": "100f",
+        "print-x": 100,
+        "print-y": 100
       },
       {
         "name": "name2",
         "value": "value2",
-        "print": {
-          "x": 100,
-          "y": 200
-        }
+        "font": "100f",
+        "print-x": 100,
+        "print-y": 200
       },
       {
         "name": "name3",
         "value": "value3",
-        "print": {
-          "x": 100,
-          "y": 300
-        }
+        "font": "100f",
+        "print-x": 100,
+        "print-y": 300
       }
     ],
     "entities": [{
       "text": "Roger Federer",
-      "print": {
-        "x": 300,
-        "y": 300
-      }
+      "font": "100f",
+      "print-x": 300,
+      "print-y": 500
     }, {
       "text": "Rafael Nadal",
-      "print": {
-        "x": 500,
-        "y": 300
-      }
+      "font": "100f",
+      "print-x": 900,
+      "print-y": 500
     }],
     "text-to-speech": "Poco meno di due anni fa, Italia e Inghilterra si sono affrontate nella finale dell'edizione ritardata di EURO 2020, ma con EURO 2024 che rapidamente si avvicina, sono state sorteggiate una accanto all'altra nei gironi di qualificazione. Queste due Nazionali si prevede possano raggiungere i primi due posti del Gruppo C, ma con il vantaggio psicologico di un'imbattibilità di sei partite contro l'Inghilterra (3 vittorie, 3 pareggi), l'Italia potrebbe pensare di poter imprimere un po' della sua autorità e portarsi al primo posto.",
     "text-language": "it-IT",
