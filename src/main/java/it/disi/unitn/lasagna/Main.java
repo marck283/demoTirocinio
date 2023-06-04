@@ -37,12 +37,13 @@ public class Main {
             Path p = f.toPath().toAbsolutePath();
             try(Reader reader = Files.newBufferedReader(p)) {
                 Gson gson = new GsonBuilder().create();
-                JsonArray array = gson.fromJson(reader, JsonObject.class).get("array").getAsJsonArray();
+                JsonObject obj = gson.fromJson(reader, JsonObject.class);
+                JsonArray array = obj.get("array").getAsJsonArray();
                 final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
                         directory = "./src/main/resources/it/disi/unitn/input/images",
                         videoDir = "./src/main/resources/it/disi/unitn/input/video",
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
-                        command, ffmpegFilePath;
+                        command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString();
                 File.makeDirs(audioDir, directory, videoDir, partial);
                 JSONToImage json2Image = new JSONToImage(f.getPath());
                 String imageExt = json2Image.generate(directory);
@@ -61,11 +62,12 @@ public class Main {
                     ffmpegFilePath = null;
                 }
 
-                int i = generator.generateAudio(), numAudioFiles = i;
+                int numAudioFiles = generator.generateAudio();
+                System.err.println(numAudioFiles);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
-                    for (i = 0; i < numAudioFiles; i++) {
+                    for (int i = 0; i < numAudioFiles; i++) {
                         builder.resetCommand(ffmpegFilePath);
 
                         StringExt string = new StringExt(String.valueOf(i));
@@ -75,7 +77,8 @@ public class Main {
                                 fileName + ".mp4", directory, fileName + "." + imageExt);
                         creator.setVideoSize(800, 600);
                         creator.setFrameRate(1);
-                        creator.setCodecID("libx264");
+                        creator.setCodecID(videoCodec);
+                        creator.setPixelFormat("yuvj420p"); //Formato dei pixel per il codec mjpeg
                         creator.setVideoQuality(18);
                         creator.createCommand(30L, TimeUnit.SECONDS);
 
