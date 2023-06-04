@@ -43,7 +43,8 @@ public class Main {
                         directory = "./src/main/resources/it/disi/unitn/input/images",
                         videoDir = "./src/main/resources/it/disi/unitn/input/video",
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
-                        command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString();
+                        command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString(),
+                pixelFormat = obj.get("pixelFormat").getAsString();
                 File.makeDirs(audioDir, directory, videoDir, partial);
                 JSONToImage json2Image = new JSONToImage(f.getPath());
                 String imageExt = json2Image.generate(directory);
@@ -78,7 +79,7 @@ public class Main {
                         creator.setVideoSize(800, 600);
                         creator.setFrameRate(1);
                         creator.setCodecID(videoCodec);
-                        creator.setPixelFormat("yuvj420p"); //Formato dei pixel per il codec mjpeg
+                        creator.setPixelFormat(pixelFormat); //Formato dei pixel
                         creator.setVideoQuality(18);
                         creator.createCommand(30L, TimeUnit.SECONDS);
 
