@@ -40,6 +40,8 @@ public class File extends java.io.File {
                 file.mkdirs();
             } else {
                 if(SystemUtils.IS_OS_LINUX) {
+                    //Possibile punto di rottura del programma. Devo richiedere i permessi di amministratore
+                    //per entrambi i comandi?
                     ProcessBuilder builder = new ProcessBuilder("bash", "-c", "mkdir -p " + file.getPath() +
                             "; chmod +w " + file.getPath());
                     builder.inheritIO();

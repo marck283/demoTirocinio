@@ -2,7 +2,6 @@ package it.disi.unitn.lasagna.audio;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 class Description {
@@ -13,22 +12,22 @@ class Description {
         this.description = description;
     }
 
-    @Contract("!null -> new")
     public static @NotNull Description parseJSON(@NotNull JsonObject json) {
-        if(json != null) {
-            JsonElement language = json.get("text-language");
-            if(language == null) {
-                System.err.println("Language NULL");
-                System.exit(2);
-            }
-            JsonElement tts = json.get("text-to-speech");
-            if(tts == null) {
-                System.err.println("TTS NULL");
-                System.exit(3);
-            }
-            return new Description(language.getAsString(), tts.getAsString());
+        if(json == null) {
+            System.err.println("Nessun testo fornito in input per la trasformazione in audio.");
+            System.exit(1);
         }
-        return null;
+        JsonElement language = json.get("text-language");
+        if(language == null) {
+            System.err.println("Language NULL");
+            System.exit(2);
+        }
+        JsonElement tts = json.get("text-to-speech");
+        if(tts == null) {
+            System.err.println("TTS NULL");
+            System.exit(3);
+        }
+        return new Description(language.getAsString(), tts.getAsString());
     }
 
     public String getLanguage() {

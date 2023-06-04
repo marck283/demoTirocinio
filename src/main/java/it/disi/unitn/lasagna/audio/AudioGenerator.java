@@ -4,8 +4,6 @@ import com.google.gson.*;
 import it.disi.unitn.exceptions.InvalidArgumentException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Reader;
-
 public class AudioGenerator {
     private final JsonArray arr;
 
