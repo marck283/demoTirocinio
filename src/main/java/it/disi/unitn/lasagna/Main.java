@@ -16,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -98,7 +100,10 @@ public class Main {
                     builder.resetCommand(ffmpegFilePath);
                     unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
                     unitnMerger.streamCopy(true);
-                    unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, outputDir.getFileList());
+
+                    List<String> ofileList = outputDir.getFileList();
+                    Collections.sort(ofileList);
+                    unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList);
 
                     File.removeDirs(audioDir, videoDir, directory, partial);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |

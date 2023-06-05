@@ -1,6 +1,6 @@
 {
   "codec": "mjpeg",
-  "pixelFormat": "yuvj422p",
+  "pixelFormat": "yuvj420p",
   "array": [{
     "stats": [
       {
