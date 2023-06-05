@@ -101,6 +101,8 @@ public class Main {
                     unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
                     unitnMerger.streamCopy(true);
 
+                    //getFileList() non restituisce la lista dei file in alcun ordine specifico, quindi la devo ordinare
+                    //prima di utilizzarla.
                     List<String> ofileList = outputDir.getFileList();
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList);
