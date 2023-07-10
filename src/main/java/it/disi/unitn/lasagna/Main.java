@@ -45,8 +45,12 @@ public class Main {
                         directory = "./src/main/resources/it/disi/unitn/input/images",
                         videoDir = "./src/main/resources/it/disi/unitn/input/video",
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
+                        tempFile = "./inputFile.txt",
                         command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString(),
                 pixelFormat = obj.get("pixelFormat").getAsString();
+
+                File inputFile = new File(tempFile);
+                Files.createFile(inputFile.toPath());
                 File.makeDirs(audioDir, directory, videoDir, partial);
                 JSONToImage json2Image = new JSONToImage(f.getPath());
                 String imageExt = json2Image.generate(directory);
@@ -98,16 +102,17 @@ public class Main {
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
                     builder.resetCommand(ffmpegFilePath);
-                    unitnMerger = builder.newTracksMerger("./src/main/resources/it/disi/unitn/output/output.mp4");
+                    unitnMerger = builder.newTracksMerger("./output.mp4");
                     unitnMerger.streamCopy(true);
 
                     //getFileList() non restituisce la lista dei file in alcun ordine specifico, quindi la devo ordinare
                     //prima di utilizzarla.
                     List<String> ofileList = outputDir.getFileList();
                     Collections.sort(ofileList);
-                    unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList);
+                    unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
-                    File.removeDirs(audioDir, videoDir, directory, partial);
+                    Files.deleteIfExists(inputFile.toPath());
+                    File.removeDirs(audioDir, videoDir, directory, partial, "./src");
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();

@@ -9,9 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 
 class Audio {
     private TextToSpeechClient textToSpeechClient;
@@ -56,7 +53,7 @@ class Audio {
             try (OutputStream out = new FileOutputStream("./src/main/resources/it/disi/unitn/input/audio/" +
                     val.getVal() + ".mp3")) {
                 out.write(response.getAudioContent().toByteArray());
-                System.out.println("Audio content written to file \"input.mp3\"");
+                System.out.println("Audio content written to file \"" + val.getVal() + ".mp3\"");
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }

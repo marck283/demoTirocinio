@@ -6,7 +6,7 @@
 
 export GOOGLE_APPLICATION_CREDENTIALS="./src/main/application_default_credentials.json"
 if [ ! -f $GOOGLE_APPLICATION_CREDENTIALS ]; then
-  echo "Errore: file application_default_credentials.json non esistente.";
+  echo "Errore: file application_default_credentials.json non esistente.">&2;
 fi
 
 #Uno dei file JAR delle dipendenze di questo applicativo è firmato con una firma differente

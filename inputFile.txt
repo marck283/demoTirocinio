@@ -1,2 +1,0 @@
-file './src/main/resources/it/disi/unitn/output/partial/000.mp4'
-file './src/main/resources/it/disi/unitn/output/partial/001.mp4'

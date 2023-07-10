@@ -17,7 +17,7 @@ public class AudioGenerator {
             Description description = Description.parseJSON(e.getAsJsonObject());
             Audio audio = new Audio(description.getDescription(), description.getLanguage());
             audio.getOutput(i);
-            i++;
+            i += 1;
         }
         return i;
     }
