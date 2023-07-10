@@ -14,6 +14,4 @@ fi
 #i file che identificano le firme.
 #sudo zip -d ./build/install/tirocinio/lib/tirocinio-1.0.jar 'META-INF/.SF' 'META-INF/.RSA' 'META-INF/*SF'
 
-#Creo le cartelle e i file necessari qui per non avere problemi con il sistema operativo.
-touch "./inputFile.txt" #Modifica il timestamp del file inputFile.txt, creandolo se necessario.
 java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar $1
