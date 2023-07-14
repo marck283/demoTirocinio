@@ -59,8 +59,7 @@ public class Main {
                     System.err.println("Errore: nessuna immagine inserita.");
                     System.exit(1);
                 }
-                json2Image.generate(directory, "./input/synset_imagenet.txt", imageExt, "Tinca tinca",
-                        "goldfish");
+                json2Image.generate(directory, "./input/synset_imagenet.txt", imageExt, "Tinca tinca");
 
                 AudioGenerator generator = new AudioGenerator(array);
 
