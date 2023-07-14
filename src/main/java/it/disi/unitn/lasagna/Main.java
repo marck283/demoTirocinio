@@ -23,15 +23,16 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) {
-        if (args == null || args.length != 1 || args[0] == null) {
+        if (args == null || args.length != 2 || args[0] == null || args[0].equals("") || args[1] == null || args[1].equals("")) {
             if (args == null) {
                 System.err.println("args NULL");
             } else {
                 System.err.println("Length: " + args.length);
             }
             System.err.println("Il numero di argomenti forniti a questo programma non puo' essere" +
-                    " diverso da 1. Si ricordi che il primo argomento fornito deve essere il percorso del file JSON" +
-                    " contenente le informazioni sulle immagini da produrre.");
+                    " diverso da 2. Si ricordi che il primo argomento fornito deve essere il percorso del file JSON" +
+                    " contenente le informazioni sulle immagini da produrre, mentre il secondo e' un valore booleano" +
+                    " che indica al programma se utilizzare una rete neurale GAN per la generazione delle immagini.");
         } else {
             File f = new File(args[0]);
 
@@ -53,7 +54,7 @@ public class Main {
                 Files.createFile(inputFile.toPath());
                 File.makeDirs(audioDir, directory, videoDir, partial);
 
-                JSONToImage json2Image = new JSONToImage(f.getPath(), true);
+                JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
                 if(imageExt.equals("")) {
                     System.err.println("Errore: nessuna immagine inserita.");
@@ -113,7 +114,7 @@ public class Main {
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
-                    Files.deleteIfExists(inputFile.toPath());
+                    //Files.deleteIfExists(inputFile.toPath());
                     File.removeDirs(audioDir, videoDir, directory, partial, "./src");
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
