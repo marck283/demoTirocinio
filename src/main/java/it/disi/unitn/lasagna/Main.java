@@ -52,12 +52,15 @@ public class Main {
                 File inputFile = new File(tempFile);
                 Files.createFile(inputFile.toPath());
                 File.makeDirs(audioDir, directory, videoDir, partial);
-                JSONToImage json2Image = new JSONToImage(f.getPath());
-                String imageExt = json2Image.generate(directory);
+
+                JSONToImage json2Image = new JSONToImage(f.getPath(), true);
+                String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
                 if(imageExt.equals("")) {
                     System.err.println("Errore: nessuna immagine inserita.");
                     System.exit(1);
                 }
+                json2Image.generate(directory, "./input/synset_imagenet.txt", imageExt, "Tinca tinca",
+                        "goldfish");
 
                 AudioGenerator generator = new AudioGenerator(array);
 

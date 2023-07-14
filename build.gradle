@@ -11,7 +11,7 @@ plugins {
     id 'java'
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 application {
@@ -68,9 +68,13 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation 'commons-cli:commons-cli:1.5.0'
 
+    implementation "ai.djl.pytorch:pytorch-engine:0.22.1"
+    implementation "ai.djl.pytorch:pytorch-model-zoo:0.22.1"
+    runtimeOnly "ai.djl.pytorch:pytorch-jni:2.0.0-0.22.1"
+
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.9-alpha1'
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.9-beta1'
     implementation 'org.burningwave:core:12.62.6'
 
 }
