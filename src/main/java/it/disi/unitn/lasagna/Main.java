@@ -48,7 +48,7 @@ public class Main {
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
                         tempFile = "./inputFile.txt",
                         command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString(),
-                pixelFormat = obj.get("pixelFormat").getAsString();
+                        pixelFormat = obj.get("pixelFormat").getAsString();
 
                 File inputFile = new File(tempFile);
                 Files.createFile(inputFile.toPath());
@@ -60,6 +60,7 @@ public class Main {
                     System.err.println("Errore: nessuna immagine inserita.");
                     System.exit(1);
                 }
+                System.err.println("IMAGE EXT: " + imageExt);
                 json2Image.generate(directory, "./input/synset_imagenet.txt", imageExt, "Tinca tinca");
 
                 AudioGenerator generator = new AudioGenerator(array);
@@ -102,6 +103,8 @@ public class Main {
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
 
+                    System.exit(1);
+
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
                     builder.resetCommand(ffmpegFilePath);
@@ -115,7 +118,7 @@ public class Main {
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
                     //Files.deleteIfExists(inputFile.toPath());
-                    File.removeDirs(audioDir, videoDir, directory, partial, "./src");
+                    File.removeDirs(audioDir, videoDir, directory, partial, "./src/main/resources/it");
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();

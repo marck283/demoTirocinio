@@ -14,4 +14,4 @@ fi
 #i file che identificano le firme.
 #sudo zip -d ./build/install/tirocinio/lib/tirocinio-1.0.jar 'META-INF/.SF' 'META-INF/.RSA' 'META-INF/*SF'
 
-java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar $1
+java -jar ./build/install/tirocinio-shadow/lib/tirocinio-shadow-1.0.jar $1 $2
