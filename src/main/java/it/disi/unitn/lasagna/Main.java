@@ -12,8 +12,7 @@ import it.disi.unitn.lasagna.audio.AudioGenerator;
 import it.disi.unitn.lasagna.string.StringExt;
 import org.apache.commons.lang3.SystemUtils;
 
-import java.io.FileNotFoundException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -22,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         if (args == null || args.length != 2 || args[0] == null || args[0].isEmpty() || args[1] == null || args[1].isEmpty()) {
             if (args == null) {
                 System.err.println("args NULL");
@@ -51,7 +50,10 @@ public class Main {
                         pixelFormat = obj.get("pixelFormat").getAsString();
 
                 File inputFile = new File(tempFile);
-                Files.createFile(inputFile.toPath());
+                if(!inputFile.exists()) {
+                    Files.createFile(inputFile.toPath());
+                }
+
                 File.makeDirs(audioDir, directory, videoDir, partial);
 
                 JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));

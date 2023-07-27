@@ -31,7 +31,7 @@ class Audio {
             // ("neutral")
             voice = VoiceSelectionParams.newBuilder()
                     .setLanguageCode(language)
-                    .setSsmlGender(SsmlVoiceGender.NEUTRAL)
+                    .setSsmlGender(SsmlVoiceGender.FEMALE) //Gender-neutral voices are not supported anymore
                     .build();
 
             // Select the type of audio file you want returned
@@ -44,6 +44,7 @@ class Audio {
     public void getOutput(int index) throws InvalidArgumentException {
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
+            System.err.println(input);
             SynthesizeSpeechResponse response =
                     textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
 
@@ -59,7 +60,7 @@ class Audio {
             }
         } catch(ApiException ex) {
             System.err.println("Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
-                    " Internet per eventuali problemi.");
+                    " Internet per eventuali problemi. Codice: " + ex.getStatusCode() + "; ragione: " + ex.getMessage());
             System.exit(1);
         }
     }
