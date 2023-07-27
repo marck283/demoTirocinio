@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) {
-        if (args == null || args.length != 2 || args[0] == null || args[0].equals("") || args[1] == null || args[1].equals("")) {
+        if (args == null || args.length != 2 || args[0] == null || args[0].isEmpty() || args[1] == null || args[1].isEmpty()) {
             if (args == null) {
                 System.err.println("args NULL");
             } else {
@@ -56,7 +56,7 @@ public class Main {
 
                 JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
-                if(imageExt.equals("")) {
+                if(imageExt.isEmpty()) {
                     System.err.println("Errore: nessuna immagine inserita.");
                     System.exit(1);
                 }
@@ -103,7 +103,7 @@ public class Main {
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
 
-                    System.exit(1);
+                    //System.exit(1);
 
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
@@ -117,7 +117,7 @@ public class Main {
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
-                    //Files.deleteIfExists(inputFile.toPath());
+                    Files.deleteIfExists(inputFile.toPath());
                     File.removeDirs(audioDir, videoDir, directory, partial, "./src/main/resources/it");
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {

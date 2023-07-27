@@ -7,7 +7,7 @@ public class StringExt {
     private String val;
 
     public StringExt(@NotNull String str) throws InvalidArgumentException {
-        if(str == null || str.equals("")) {
+        if(str == null || str.isEmpty()) {
             throw new InvalidArgumentException("L'argomento fornito a questo costruttore non può essere null o una stringa" +
                     " vuota");
         }
