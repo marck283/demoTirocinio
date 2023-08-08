@@ -105,9 +105,6 @@ public class Main {
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
 
-                    //Istruzione da rimuovere
-                    //System.exit(1);
-
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
                     builder.resetCommand(ffmpegFilePath);
