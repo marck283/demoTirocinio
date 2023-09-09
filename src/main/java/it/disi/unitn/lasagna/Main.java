@@ -118,7 +118,7 @@ public class Main {
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
                     Files.deleteIfExists(inputFile.toPath());
-                    //File.removeDirs(audioDir, videoDir, directory, partial/*, "./src/main/resources/it"*/);
+                    File.removeDirs(audioDir, videoDir, directory, partial, "./src");
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();
