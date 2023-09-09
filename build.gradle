@@ -68,17 +68,9 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation 'commons-cli:commons-cli:1.5.0'
 
-    /*implementation "ai.djl:bom:0.22.1"
-    implementation "ai.djl:api:0.22.1"
-    implementation "ai.djl.pytorch:pytorch-engine:0.22.1"
-    implementation "ai.djl.pytorch:pytorch-model-zoo:0.22.1"
-    runtimeOnly "ai.djl.pytorch:pytorch-jni:2.0.0-0.22.1"
-    runtimeOnly "ai.djl.pytorch:pytorch-native-cu118:2.0.0:win-x86_64" //Windows version of PyTorch library
-    runtimeOnly "ai.djl.pytorch:pytorch-native-cu118:2.0.1:linux-x86_64" //Linux version of PyTorch library*/
-
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.9-beta7-debug4'
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.0.9-beta23-alpha2'
     implementation 'org.burningwave:core:12.62.6'
 
 }

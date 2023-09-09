@@ -63,20 +63,20 @@ public class Main {
                     System.exit(1);
                 }
                 System.err.println("IMAGE EXT: " + imageExt);
-                json2Image.generate(directory, "./input/synset_imagenet.txt", imageExt, "Tinca tinca");
+                json2Image.generate(directory, imageExt);
 
                 AudioGenerator generator = new AudioGenerator(array);
 
                 if (SystemUtils.IS_OS_WINDOWS) {
                     command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
                     ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                    //throw new UnsupportedOperatingSystemException();
                 } else {
                     command = "ffmpeg";
                     ffmpegFilePath = null;
                 }
 
                 int numAudioFiles = generator.generateAudio();
-                System.err.println(numAudioFiles);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
@@ -118,7 +118,7 @@ public class Main {
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
                     Files.deleteIfExists(inputFile.toPath());
-                    File.removeDirs(audioDir, videoDir, directory, partial, "./src/main/resources/it");
+                    //File.removeDirs(audioDir, videoDir, directory, partial/*, "./src/main/resources/it"*/);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();
