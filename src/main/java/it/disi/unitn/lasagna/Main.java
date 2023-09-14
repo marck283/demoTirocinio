@@ -21,17 +21,23 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
-        if (args == null || args.length != 2 || args[0] == null || args[0].isEmpty() || args[1] == null || args[1].isEmpty()) {
-            if (args == null) {
-                System.err.println("args NULL");
-            } else {
-                System.err.println("Length: " + args.length);
-            }
+    private static boolean checkVars(String[] args) {
+        if(args == null || (args.length <= 3 && args[0] == null || args[0].isEmpty() ||
+                args[1] == null || args[1].isEmpty())) {
+            return false;
+        }
+        return args.length != 4 && (args.length < 4 ||
+                (args[2] != null && !args[2].isEmpty() && args[3] != null && !args[3].isEmpty()));
+    }
+
+    public static void main(String[] args) {
+        if (checkVars(args)) {
             System.err.println("Il numero di argomenti forniti a questo programma non puo' essere" +
-                    " diverso da 2. Si ricordi che il primo argomento fornito deve essere il percorso del file JSON" +
-                    " contenente le informazioni sulle immagini da produrre, mentre il secondo e' un valore booleano" +
-                    " che indica al programma se utilizzare una rete neurale GAN per la generazione delle immagini.");
+                    " diverso da 2 (se non si vuole utilizzare una rete neurale per la generazione delle immagini) o da 4" +
+                    " (se, invece, si utilizza una rete neurale per tale scopo). Si ricordi che il primo argomento fornito" +
+                    " deve essere il percorso del file JSON contenente le informazioni sulle immagini da produrre," +
+                    " mentre il secondo e' un valore booleano che indica al programma se utilizzare una rete neurale" +
+                    " per la generazione delle immagini.");
         } else {
             File f = new File(args[0]);
 
@@ -63,14 +69,14 @@ public class Main {
                     System.exit(1);
                 }
                 System.err.println("IMAGE EXT: " + imageExt);
-                json2Image.generate(directory, imageExt);
+                json2Image.generate(directory, imageExt, Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 
                 AudioGenerator generator = new AudioGenerator(array);
 
                 if (SystemUtils.IS_OS_WINDOWS) {
-                    command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
-                    ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
-                    //throw new UnsupportedOperatingSystemException();
+                    /*command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
+                    ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";*/
+                    throw new UnsupportedOperatingSystemException();
                 } else {
                     command = "ffmpeg";
                     ffmpegFilePath = null;
