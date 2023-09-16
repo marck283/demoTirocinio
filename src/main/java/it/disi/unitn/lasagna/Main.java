@@ -15,6 +15,7 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,12 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static boolean checkVars(String[] args) {
-        if(args == null || (args.length <= 3 && args[0] == null || args[0].isEmpty() ||
-                args[1] == null || args[1].isEmpty())) {
+        if(args == null || (args.length != 2 && args.length != 4)) {
             return false;
         }
-        return args.length != 4 && (args.length < 4 ||
-                (args[2] != null && !args[2].isEmpty() && args[3] != null && !args[3].isEmpty()));
+
+        return Arrays.stream(args).anyMatch(s -> s == null || s.isEmpty());
     }
 
     public static void main(String[] args) {
@@ -62,14 +62,20 @@ public class Main {
 
                 File.makeDirs(audioDir, directory, videoDir, partial);
 
-                JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
+                boolean useNN = Boolean.parseBoolean(args[1]);
+                JSONToImage json2Image = new JSONToImage(f.getPath(), useNN);
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
                 if(imageExt.isEmpty()) {
                     System.err.println("Errore: nessuna immagine inserita.");
                     System.exit(1);
                 }
-                System.err.println("IMAGE EXT: " + imageExt);
-                json2Image.generate(directory, imageExt, Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+
+                int width = 0, height = 0;
+                if(args.length == 4) {
+                    width = Integer.parseInt(args[2]);
+                    height = Integer.parseInt(args[3]);
+                }
+                json2Image.generate(directory, imageExt, width, height);
 
                 AudioGenerator generator = new AudioGenerator(array);
 
@@ -94,7 +100,11 @@ public class Main {
                         String fileName = string.getVal();
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
                                 fileName + ".mp4", directory, fileName + "." + imageExt);
-                        creator.setVideoSize(800, 600);
+                        if(useNN) {
+                            creator.setVideoSize(width, height);
+                        } else {
+                            creator.setVideoSize(800, 600);
+                        }
                         creator.setFrameRate(1);
                         creator.setCodecID(videoCodec);
                         creator.setPixelFormat(pixelFormat); //Formato dei pixel
