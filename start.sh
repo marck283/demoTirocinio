@@ -7,6 +7,7 @@
 export GOOGLE_APPLICATION_CREDENTIALS="./application_default_credentials.json"
 if [ ! -f $GOOGLE_APPLICATION_CREDENTIALS ]; then
   echo "Errore: file application_default_credentials.json non esistente.">&2;
+  exit 1;
 fi
 
 if [ $# -ne 4 ]; then
