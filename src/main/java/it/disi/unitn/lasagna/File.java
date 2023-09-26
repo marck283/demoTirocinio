@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class File extends java.io.File {
@@ -24,15 +25,16 @@ public class File extends java.io.File {
      */
     public static void makeDirs(@NotNull String @NotNull ... dirPaths)
             throws Exception {
-        if(dirPaths == null) {
-            throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
+        if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(path -> path == null || path.isEmpty())) {
+            throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo puo' essere null o una " +
+                    "stringa vuota.");
         }
 
-        for(String path: dirPaths) {
-            if(path == null || path.equals("")) {
+        /*for(String path: dirPaths) {
+            if(path == null || path.isEmpty()) {
                 throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
             }
-        }
+        }*/
 
         for(String path: dirPaths) {
             File file = new File(path);
@@ -68,15 +70,16 @@ public class File extends java.io.File {
      * @throws IOException se occorre un errore I/O
      */
     public static void removeDirs(@NotNull String @NotNull ... dirPaths) throws IllegalArgumentException, IOException {
-        if(dirPaths == null) {
-            throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
+        if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(path -> path == null || path.isEmpty())) {
+            throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null o una " +
+                    "stringa vuota.");
         }
 
-        for(String path: dirPaths) {
-            if(path == null || path.equals("")) {
+        /*for(String path: dirPaths) {
+            if(path == null || path.isEmpty()) {
                 throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
             }
-        }
+        }*/
 
         for(String path: dirPaths) {
             File file = new File(path);

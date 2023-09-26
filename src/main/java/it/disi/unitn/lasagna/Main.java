@@ -2,6 +2,7 @@ package it.disi.unitn.lasagna;
 
 import com.google.gson.*;
 import it.disi.unitn.FFMpegBuilder;
+import it.disi.unitn.StringExt;
 import it.disi.unitn.TracksMerger;
 import it.disi.unitn.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
@@ -9,7 +10,6 @@ import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
-import it.disi.unitn.lasagna.string.StringExt;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.*;

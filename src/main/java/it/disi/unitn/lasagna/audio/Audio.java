@@ -2,8 +2,8 @@ package it.disi.unitn.lasagna.audio;
 
 import com.google.api.gax.rpc.ApiException;
 import com.google.cloud.texttospeech.v1.*;
+import it.disi.unitn.StringExt;
 import it.disi.unitn.exceptions.InvalidArgumentException;
-import it.disi.unitn.lasagna.string.StringExt;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileOutputStream;
@@ -16,12 +16,12 @@ class Audio {
     private VoiceSelectionParams voice;
     private AudioConfig audioConfig;
 
-    private String description;
+    //private String description;
 
     public Audio(@NotNull String description, @NotNull String language) {
         // Instantiates a client
         try {
-            this.description = description;
+            //this.description = description;
             textToSpeechClient = TextToSpeechClient.create();
 
             // Set the text input to be synthesized
@@ -38,13 +38,15 @@ class Audio {
             audioConfig = AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.MP3).build();
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.err.println(ex.getLocalizedMessage());
+            System.exit(1);
         }
     }
 
     public void getOutput(int index) throws InvalidArgumentException {
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
-            System.err.println(input);
+            //System.err.println(input);
             SynthesizeSpeechResponse response =
                     textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
 
