@@ -17,9 +17,4 @@ if [ $# -ne 4 ]; then
   echo "NOTA: sia il valore dell'altezza che quello della larghezza non possono essere negativi.">&2;
 fi
 
-#Uno dei file JAR delle dipendenze di questo applicativo è firmato con una firma differente
-#da quella del JAR di questo applicativo, quindi, prima di eseguirlo, devo rimuovere tutti
-#i file che identificano le firme.
-#sudo zip -d ./build/install/tirocinio/lib/tirocinio-1.0.jar 'META-INF/.SF' 'META-INF/.RSA' 'META-INF/*SF'
-
 java -jar ./tirocinio-shadow-1.0.jar $1 $2 $3 $4
