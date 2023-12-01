@@ -114,10 +114,14 @@ public class File extends java.io.File {
      * @throws FileNotFoundException Se il percorso fornito non denota una directory
      */
     public List<String> getFileList() throws FileNotFoundException {
+        //Si controlli se questa chiamata a isDirectory() possa essere sostituita con
+        //una chiamata a Files.isDirectory().
         if(!isDirectory()) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
         }
 
+        //Controllare anche se sostituire questo pezzo di codice con un altro compatibile con
+        //la chiamata a Files.list().
         java.io.File[] fileList = listFiles();
         if(fileList == null) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
