@@ -1,20 +1,43 @@
 package it.disi.unitn.lasagna;
 
-import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
+/*import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;*/
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class File extends java.io.File {
 
+    private final String pathname;
+
     public File(@NotNull String pathname) {
         super(pathname);
+        this.pathname = pathname;
+    }
+
+    /**
+     * Crea un'istanza della classe Path risolvendo il pathnme e il file passati.
+     * @param path Il pathname da utilizzare
+     * @param filename Il nome del file da risolvere
+     * @return Un'istanza di Path che rappresenta il file passato come parametro.
+     */
+    private static @NotNull Path getPath(String path, String filename) {
+        Path path1 = Paths.get(path);
+        return path1.resolve(filename);
     }
 
     /**
@@ -37,8 +60,11 @@ public class File extends java.io.File {
         }*/
 
         for(String path: dirPaths) {
-            File file = new File(path);
-            if(SystemUtils.IS_OS_WINDOWS) {
+            //File file = new File(path);
+
+            Files.createDirectories(getPath(path, ""));
+
+            /*if(SystemUtils.IS_OS_WINDOWS) {
                 file.mkdirs();
             } else {
                 if(SystemUtils.IS_OS_LINUX) {
@@ -59,32 +85,25 @@ public class File extends java.io.File {
                 } else {
                     throw new UnsupportedOperatingSystemException();
                 }
-            }
+            }*/
         }
     }
 
     /**
-     * Questo metodo rimuove le cartelle associate ai path comunicati come argomenti.
-     * @param dirPaths I path che denotano le cartelle da eliminare. Nessuno di questi argomenti può essere null.
+     * Questo metodo rimuove tutte le cartelle interne all'albero avente come radice la cartella
+     * associata al path comunicato in fase di istanziazione della classe.
      * @throws IllegalArgumentException Quando almeno un argomento è null
      * @throws IOException se occorre un errore I/O
      */
-    public static void removeDirs(@NotNull String @NotNull ... dirPaths) throws IllegalArgumentException, IOException {
-        if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(path -> path == null || path.isEmpty())) {
-            throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null o una " +
-                    "stringa vuota.");
-        }
-
-        /*for(String path: dirPaths) {
-            if(path == null || path.isEmpty()) {
-                throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
-            }
-        }*/
-
-        for(String path: dirPaths) {
-            File file = new File(path);
-            FileUtils.cleanDirectory(file);
-            file.delete();
+    public void removeSelf() throws IllegalArgumentException, IOException {
+        try(Stream<Path> walk = Files.walk(getPath(pathname, ""))) {
+            walk.sorted(Comparator.reverseOrder()).forEach(path -> {
+                try {
+                    Files.delete(path);
+                } catch (IOException ex) {
+                    System.err.println("IOException: " + ex.getMessage());
+                }
+            });
         }
     }
 

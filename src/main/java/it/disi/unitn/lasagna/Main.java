@@ -11,6 +11,7 @@ import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
 import org.apache.commons.lang3.SystemUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -28,6 +29,20 @@ public class Main {
         }
 
         return Arrays.stream(args).anyMatch(s -> s == null || s.isEmpty());
+    }
+
+    private static void cleanup(@NotNull File inputFile) throws IOException {
+        Files.deleteIfExists(inputFile.toPath());
+        File audio = new File("./src/main/resources/it/disi/unitn/input/audio"),
+                video = new File("./src/main/resources/it/disi/unitn/input/video"),
+                direct = new File("./src/main/resources/it/disi/unitn/input/images"),
+                part = new File("./src/main/resources/it/disi/unitn/output/partial"),
+                src = new File("./src");
+        audio.removeSelf();
+        video.removeSelf();
+        direct.removeSelf();
+        part.removeSelf();
+        src.removeSelf();
     }
 
     public static void main(String[] args) {
@@ -133,12 +148,13 @@ public class Main {
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
 
-                    Files.deleteIfExists(inputFile.toPath());
-                    File.removeDirs(audioDir, videoDir, directory, partial, "./src");
+                    cleanup(inputFile);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();
                     System.err.println(ex.getMessage());
+                } finally {
+
                 }
             } catch(Exception ex) {
                 ex.printStackTrace();
