@@ -1,6 +1,6 @@
 package it.disi.unitn.lasagna;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
 import it.disi.unitn.FFMpegBuilder;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.TracksMerger;
@@ -10,12 +10,14 @@ import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
+import it.disi.unitn.jsonparser.JsonParser;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,18 +59,18 @@ public class Main {
             File f = new File(args[0]);
 
             //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
-            Path p = f.toPath().toAbsolutePath();
+            //Path p = f.toPath().toAbsolutePath();
+            Path p = Paths.get(args[0]).toAbsolutePath();
             try(Reader reader = Files.newBufferedReader(p)) {
-                Gson gson = new GsonBuilder().create();
-                JsonObject obj = gson.fromJson(reader, JsonObject.class);
-                JsonArray array = obj.get("array").getAsJsonArray();
+                JsonParser parser = new JsonParser(reader);
+                JsonArray array = parser.getJsonArray("array");
                 final String audioDir = "./src/main/resources/it/disi/unitn/input/audio",
                         directory = "./src/main/resources/it/disi/unitn/input/images",
                         videoDir = "./src/main/resources/it/disi/unitn/input/video",
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
                         tempFile = "./inputFile.txt",
-                        command, ffmpegFilePath, videoCodec = obj.get("codec").getAsString(),
-                        pixelFormat = obj.get("pixelFormat").getAsString();
+                        command, ffmpegFilePath, videoCodec = parser.getString("codec"),
+                        pixelFormat = parser.getString("pixelFormat");
 
                 File inputFile = new File(tempFile);
                 if(!inputFile.exists()) {
@@ -154,7 +156,7 @@ public class Main {
                     ex.printStackTrace();
                     System.err.println(ex.getMessage());
                 } finally {
-
+                    cleanup(inputFile);
                 }
             } catch(Exception ex) {
                 ex.printStackTrace();
