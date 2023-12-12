@@ -10,7 +10,7 @@ import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
-import it.disi.unitn.jsonparser.JsonParser;
+import it.disi.unitn.json.jsonparser.JsonParser;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,10 +40,10 @@ public class Main {
                 direct = new File("./src/main/resources/it/disi/unitn/input/images"),
                 part = new File("./src/main/resources/it/disi/unitn/output/partial"),
                 src = new File("./src");
-        audio.removeSelf();
+        /*audio.removeSelf();
         video.removeSelf();
         direct.removeSelf();
-        part.removeSelf();
+        part.removeSelf();*/
         src.removeSelf();
     }
 
@@ -149,8 +149,6 @@ public class Main {
                     List<String> ofileList = outputDir.getFileList();
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
-
-                    cleanup(inputFile);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
                          UnsupportedOperatingSystemException ex) {
                     ex.printStackTrace();
