@@ -111,18 +111,29 @@ public class File extends java.io.File {
      * Questo metodo permette di ottenere una lista dei path dei file interni alla cartella identificata da questa
      * istanza di File.
      * @return La lista dei path dei file interni alla cartella associata a questa istanza di File
-     * @throws FileNotFoundException Se il percorso fornito non denota una directory
+     * @throws IOException Se si verifica un errore di I/O
      */
-    public List<String> getFileList() throws FileNotFoundException {
+    public List<String> getFileList() throws IOException {
         //Si controlli se questa chiamata a isDirectory() possa essere sostituita con
         //una chiamata a Files.isDirectory().
-        if(!isDirectory()) {
+        /*if(!isDirectory()) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
+        }*/
+        if(!Files.isDirectory(getPath(getPath(), ""))) {
+            throw new FileNotFoundException("Il percorso fornito non denota una directory.");
+        }
+
+        List<String> filePathList = new ArrayList<>();
+        try (Stream<Path> pathStream = Files.list(getPath(pathname, ""))) {
+            if(pathStream == null) {
+                throw new FileNotFoundException("Il percorso fornito non denota una directory.");
+            }
+            pathStream.forEach(path -> filePathList.add(path.toFile().getPath()));
         }
 
         //Controllare anche se sostituire questo pezzo di codice con un altro compatibile con
         //la chiamata a Files.list().
-        java.io.File[] fileList = listFiles();
+        /*java.io.File[] fileList = listFiles();
         if(fileList == null) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
         }
@@ -130,7 +141,7 @@ public class File extends java.io.File {
         List<String> filePathList = new ArrayList<>();
         for (java.io.File file : fileList) {
             filePathList.add(file.getPath());
-        }
+        }*/
 
         return filePathList;
     }
