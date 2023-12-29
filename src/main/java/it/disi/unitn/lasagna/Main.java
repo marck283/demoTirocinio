@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import it.disi.unitn.FFMpegBuilder;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.TracksMerger;
-import it.disi.unitn.VideoCreator;
+import it.disi.unitn.videocreator.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
@@ -35,11 +35,11 @@ public class Main {
 
     private static void cleanup(@NotNull File inputFile) throws IOException {
         Files.deleteIfExists(inputFile.toPath());
-        File audio = new File("./src/main/resources/it/disi/unitn/input/audio"),
+        /*File audio = new File("./src/main/resources/it/disi/unitn/input/audio"),
                 video = new File("./src/main/resources/it/disi/unitn/input/video"),
                 direct = new File("./src/main/resources/it/disi/unitn/input/images"),
-                part = new File("./src/main/resources/it/disi/unitn/output/partial"),
-                src = new File("./src");
+                part = new File("./src/main/resources/it/disi/unitn/output/partial"),*/
+        File src = new File("./src");
         /*audio.removeSelf();
         video.removeSelf();
         direct.removeSelf();
@@ -54,7 +54,8 @@ public class Main {
                     " (se, invece, si utilizza una rete neurale per tale scopo). Si ricordi che il primo argomento fornito" +
                     " deve essere il percorso del file JSON contenente le informazioni sulle immagini da produrre," +
                     " mentre il secondo e' un valore booleano che indica al programma se utilizzare una rete neurale" +
-                    " per la generazione delle immagini.");
+                    " per la generazione delle immagini. L'eventuale terzo e quarto argomento rappresentano, rispettivamente," +
+                    " la larghezza e l'altezza delle immagini da produrre.");
         } else {
             File f = new File(args[0]);
 
@@ -149,8 +150,8 @@ public class Main {
                     List<String> ofileList = outputDir.getFileList();
                     Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
-                } catch (NotEnoughArgumentsException | InvalidArgumentException | FileNotFoundException |
-                         UnsupportedOperatingSystemException ex) {
+                } catch (NotEnoughArgumentsException | InvalidArgumentException |
+                         UnsupportedOperatingSystemException | IOException | RuntimeException ex) {
                     ex.printStackTrace();
                     System.err.println(ex.getMessage());
                 } finally {
