@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -145,10 +145,8 @@ public class Main {
                     unitnMerger = builder.newTracksMerger("./output.mp4");
                     unitnMerger.streamCopy(true);
 
-                    //getFileList() non restituisce la lista dei file in alcun ordine specifico, quindi la devo ordinare
-                    //prima di utilizzarla.
                     List<String> ofileList = outputDir.getFileList();
-                    Collections.sort(ofileList);
+                    //Collections.sort(ofileList);
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException |
                          UnsupportedOperatingSystemException | IOException | RuntimeException ex) {

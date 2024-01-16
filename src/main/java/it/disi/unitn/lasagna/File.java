@@ -14,10 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class File extends java.io.File {
@@ -128,8 +125,14 @@ public class File extends java.io.File {
             if(pathStream == null) {
                 throw new FileNotFoundException("Il percorso fornito non denota una directory.");
             }
-            pathStream.forEach(path -> filePathList.add(path.toFile().getPath()));
+            pathStream.forEach(path -> {
+                //filePathList.add(path.toFile().getPath());
+                filePathList.add(path.toString());
+            });
         }
+
+        //La lista appena ottenuta non è ordinata in alcun ordine specifico, quindi la devo ordinare in ordine crescente.
+        Collections.sort(filePathList);
 
         //Controllare anche se sostituire questo pezzo di codice con un altro compatibile con
         //la chiamata a Files.list().
