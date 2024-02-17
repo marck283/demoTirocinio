@@ -12,11 +12,13 @@ plugins {
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
     id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    //id 'cpp'
 }
 
-application {
+/*application {
     mainClassName = 'it.disi.unitn.lasagna.Main'
-}
+    applicationDefaultJvmArgs = ["-Djava.library.path=" + file("${buildDir}/libs/ffcodec/shared").absolutePath]
+}*/
 
 group 'it.disi.unitn.lasagna'
 version '1.0'
@@ -71,10 +73,49 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.2-alpha1' //Ultima versione
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.2' //Ultima versione
     implementation 'org.burningwave:core:12.62.6'
 
 }
+
+/*import org.gradle.internal.jvm.Jvm
+
+model {
+    platforms {
+        x64 {
+            architecture "x86_64"
+        }
+    }
+
+    components {
+        compileFfcodecSharedLibraryFfcodecCpp(NativeLibrarySpec) {
+            targetPlatform "x64"
+            binaries.all {
+                def jvmHome = Jvm.current().javaHome
+                if (targetPlatform.operatingSystem.macOsX) {
+                    cCompiler.args '-I', "${jvmHome}/include"
+                    cCompiler.args '-I', "${jvmHome}/include/darwin"
+                    cCompiler.args '-mmacosx-version-min=10.4'
+                    linker.args '-mmacosx-version-min=10.4'
+                } else if (targetPlatform.operatingSystem.linux) {
+                    cCompiler.args '-I', "${jvmHome}/include"
+                    cCompiler.args '-I', "${jvmHome}/include/linux"
+                    cCompiler.args '-D_FILE_OFFSET_BITS=64'
+                } else if (targetPlatform.operatingSystem.windows) {
+                    cCompiler.args "-I${jvmHome}/include"
+                    cCompiler.args "-I${jvmHome}/include/win32"
+                } else if (targetPlatform.operatingSystem.freeBSD) {
+                    cCompiler.args '-I', "${jvmHome}/include"
+                    cCompiler.args '-I', "${jvmHome}/include/freebsd"
+                }
+            }
+        }
+    }
+}
+
+tasks.register("compileFfcodecSharedLibraryFfcodecCpp") {
+    inputs.files compileJava
+}*/
 
 test {
     useJUnitPlatform()
