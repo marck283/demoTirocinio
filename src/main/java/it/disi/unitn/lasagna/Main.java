@@ -39,12 +39,12 @@ public class Main {
                 video = new File("./src/main/resources/it/disi/unitn/input/video"),
                 direct = new File("./src/main/resources/it/disi/unitn/input/images"),
                 part = new File("./src/main/resources/it/disi/unitn/output/partial"),*/
-        File src = new File("./src");
+        File main = new File("./src/main");
         /*audio.removeSelf();
         video.removeSelf();
         direct.removeSelf();
         part.removeSelf();*/
-        src.removeSelf();
+        main.removeSelf();
     }
 
     public static void main(String[] args) {

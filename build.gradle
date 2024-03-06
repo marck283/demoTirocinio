@@ -15,10 +15,10 @@ plugins {
     //id 'cpp'
 }
 
-/*application {
+application {
     mainClassName = 'it.disi.unitn.lasagna.Main'
-    applicationDefaultJvmArgs = ["-Djava.library.path=" + file("${buildDir}/libs/ffcodec/shared").absolutePath]
-}*/
+    //applicationDefaultJvmArgs = ["-Djava.library.path=" + file("${buildDir}/libs/ffcodec/shared").absolutePath]
+}
 
 group 'it.disi.unitn.lasagna'
 version '1.0'
@@ -73,7 +73,7 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api:1.7.5'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.15.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.2' //Ultima versione
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.4' //Ultima versione
     implementation 'org.burningwave:core:12.62.6'
 
 }
