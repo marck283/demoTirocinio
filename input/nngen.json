@@ -1,5 +1,6 @@
 {
   "codec": "mjpeg",
+  "audioCodec": "mpeg4",
   "pixelFormat": "yuvj420p",
   "array": [{
     "stats": [

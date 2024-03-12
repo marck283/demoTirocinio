@@ -44,7 +44,7 @@ public class Main {
         video.removeSelf();
         direct.removeSelf();
         part.removeSelf();*/
-        main.removeSelf();
+        //main.removeSelf();
     }
 
     public static void main(String[] args) {
@@ -71,6 +71,7 @@ public class Main {
                         partial = "./src/main/resources/it/disi/unitn/output/partial",
                         tempFile = "./inputFile.txt",
                         command, ffmpegFilePath, videoCodec = parser.getString("codec"),
+                        audioCodec = parser.getString("audioCodec"),
                         pixelFormat = parser.getString("pixelFormat");
 
                 File inputFile = new File(tempFile);
@@ -106,7 +107,16 @@ public class Main {
                     ffmpegFilePath = null;
                 }
 
-                int numAudioFiles = generator.generateAudio();
+                String videoExt, audioExt;
+                if(videoCodec.startsWith("wmv")) {
+                    videoExt = "wmv";
+                    audioExt = "wma";
+                } else {
+                    videoExt = "mp4";
+                    audioExt = "mp3";
+                }
+
+                int numAudioFiles = generator.generateAudio(audioExt);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
@@ -117,7 +127,7 @@ public class Main {
                         string.padStart();
                         String fileName = string.getVal();
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
-                                fileName + ".mp4", directory, fileName + "." + imageExt);
+                                fileName + "." + videoExt, directory, fileName + "." + imageExt);
                         if(useNN) {
                             creator.setVideoSize(width, height);
                         } else {
@@ -126,14 +136,24 @@ public class Main {
                         creator.setFrameRate(1);
                         creator.setCodecID(videoCodec);
                         creator.setPixelFormat(pixelFormat); //Formato dei pixel
+
+                        if(videoCodec.equals("mjpeg") && pixelFormat.startsWith("yuv") && !pixelFormat.startsWith("yuvj")) {
+                            creator.setOutFullRange(true);
+                        }
+                        /*if(videoCodec.startsWith("wmv")) {
+                            //Imposta il codec audio al formato WMAv2 (Windows Media Audio)
+                            creator.setAudioCodec("wmav2");
+                        }*/
+                        creator.setAudioCodec(audioCodec);
+
                         creator.setVideoQuality(18);
                         creator.createCommand(30L, TimeUnit.SECONDS);
 
                         builder.resetCommand(ffmpegFilePath);
 
-                        String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + ".mp4",
-                                inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + ".mp3",
-                                outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + ".mp4";
+                        String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + "." + videoExt,
+                                inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + "." + audioExt,
+                                outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + "." + videoExt;
                         unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
                         unitnMerger.streamCopy(true);
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
@@ -142,7 +162,7 @@ public class Main {
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
                     builder.resetCommand(ffmpegFilePath);
-                    unitnMerger = builder.newTracksMerger("./output.mp4");
+                    unitnMerger = builder.newTracksMerger("./output." + videoExt);
                     unitnMerger.streamCopy(true);
 
                     List<String> ofileList = outputDir.getFileList();

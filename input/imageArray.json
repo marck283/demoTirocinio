@@ -1,6 +1,7 @@
 {
-  "codec": "mjpeg",
-  "pixelFormat": "yuvj420p",
+  "codec": "wmv2",
+  "audioCodec": "wmav2",
+  "pixelFormat": "yuv420p",
   "array": [
     {
       "stats": [

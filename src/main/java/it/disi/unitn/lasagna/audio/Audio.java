@@ -43,7 +43,7 @@ class Audio {
         }
     }
 
-    public void getOutput(int index) throws InvalidArgumentException {
+    public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException {
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
             //System.err.println(input);
@@ -54,9 +54,9 @@ class Audio {
             StringExt val = new StringExt(String.valueOf(index));
             val.padStart();
             try (OutputStream out = new FileOutputStream("./src/main/resources/it/disi/unitn/input/audio/" +
-                    val.getVal() + ".mp3")) {
+                    val.getVal() + "." + extension)) {
                 out.write(response.getAudioContent().toByteArray());
-                System.out.println("Audio content written to file \"" + val.getVal() + ".mp3\"");
+                System.out.println("Audio content written to file \"" + val.getVal() + "." + extension + "\"");
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }

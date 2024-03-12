@@ -11,12 +11,12 @@ public class AudioGenerator {
         this.arr = arr;
     }
 
-    public int generateAudio() throws InvalidArgumentException {
+    public int generateAudio(@NotNull String extension) throws InvalidArgumentException {
         int i = 0;
         for(JsonElement e: arr) {
             Description description = Description.parseJSON(e.getAsJsonObject());
             Audio audio = new Audio(description.getDescription(), description.getLanguage());
-            audio.getOutput(i);
+            audio.getOutput(i, extension);
             i += 1;
         }
         return i;
