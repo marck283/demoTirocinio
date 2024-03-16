@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static boolean checkVars(String[] args) {
-        if(args == null || (args.length != 2 && args.length != 4)) {
+        if(args == null || (args.length != 3 && args.length != 5)) {
             return false;
         }
 
@@ -44,13 +44,13 @@ public class Main {
         video.removeSelf();
         direct.removeSelf();
         part.removeSelf();*/
-        //main.removeSelf();
+        main.removeSelf();
     }
 
     public static void main(String[] args) {
         if (checkVars(args)) {
             System.err.println("Il numero di argomenti forniti a questo programma non puo' essere" +
-                    " diverso da 2 (se non si vuole utilizzare una rete neurale per la generazione delle immagini) o da 4" +
+                    " diverso da 3 (se non si vuole utilizzare una rete neurale per la generazione delle immagini) o da 5" +
                     " (se, invece, si utilizza una rete neurale per tale scopo). Si ricordi che il primo argomento fornito" +
                     " deve essere il percorso del file JSON contenente le informazioni sulle immagini da produrre," +
                     " mentre il secondo e' un valore booleano che indica al programma se utilizzare una rete neurale" +
@@ -81,8 +81,7 @@ public class Main {
 
                 File.makeDirs(audioDir, directory, videoDir, partial);
 
-                boolean useNN = Boolean.parseBoolean(args[1]);
-                JSONToImage json2Image = new JSONToImage(f.getPath(), useNN);
+                JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
                 if(imageExt.isEmpty()) {
                     System.err.println("Errore: nessuna immagine inserita.");
@@ -90,11 +89,13 @@ public class Main {
                 }
 
                 int width = 0, height = 0;
-                if(args.length == 4) {
+                if(args.length == 5) {
                     width = Integer.parseInt(args[2]);
                     height = Integer.parseInt(args[3]);
                 }
-                json2Image.generate(directory, imageExt, width, height);
+                System.out.println("WIDTH: " + width);
+                System.out.println("HEIGHT: " + height);
+                json2Image.generate(directory, imageExt, width, height, 1800000);
 
                 AudioGenerator generator = new AudioGenerator(array);
 
@@ -128,13 +129,11 @@ public class Main {
                         String fileName = string.getVal();
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
                                 fileName + "." + videoExt, directory, fileName + "." + imageExt);
-                        if(useNN) {
-                            creator.setVideoSize(width, height);
-                        } else {
-                            creator.setVideoSize(800, 600);
-                        }
+
+                        boolean customFFmpeg = Boolean.parseBoolean(args[3]);
+                        creator.setVideoSize(width, height, pixelFormat, customFFmpeg);
                         creator.setFrameRate(1);
-                        creator.setCodecID(videoCodec);
+                        creator.setCodecID(videoCodec, customFFmpeg);
                         creator.setPixelFormat(pixelFormat); //Formato dei pixel
 
                         if(videoCodec.equals("mjpeg") && pixelFormat.startsWith("yuv") && !pixelFormat.startsWith("yuvj")) {

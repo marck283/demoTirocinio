@@ -9,12 +9,15 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Locale;
 
 class Audio {
     private TextToSpeechClient textToSpeechClient;
     private SynthesisInput input;
     private VoiceSelectionParams voice;
     private AudioConfig audioConfig;
+
+    private Locale locale;
 
     //private String description;
 
@@ -36,6 +39,8 @@ class Audio {
 
             // Select the type of audio file you want returned
             audioConfig = AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.MP3).build();
+
+            locale = Locale.getDefault();
         } catch (IOException ex) {
             ex.printStackTrace();
             System.err.println(ex.getLocalizedMessage());
@@ -56,13 +61,24 @@ class Audio {
             try (OutputStream out = new FileOutputStream("./src/main/resources/it/disi/unitn/input/audio/" +
                     val.getVal() + "." + extension)) {
                 out.write(response.getAudioContent().toByteArray());
-                System.out.println("Audio content written to file \"" + val.getVal() + "." + extension + "\"");
+                if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
+                    System.out.println("Contenuto audio scritto sul file \"" + val.getVal() + "." + extension + "\"");
+                } else {
+                    System.out.println("Audio content written to file \"" + val.getVal() + "." + extension + "\"");
+                }
             } catch (IOException e) {
                 System.err.println(e.getMessage());
+                System.exit(1);
             }
         } catch(ApiException ex) {
-            System.err.println("Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
-                    " Internet per eventuali problemi. Codice: " + ex.getStatusCode() + "; ragione: " + ex.getMessage());
+            if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
+                System.err.println("Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
+                        " Internet per eventuali problemi. Codice di errore: " + ex.getStatusCode() + "; ragione: " +
+                        ex.getMessage());
+            } else {
+                System.err.println("Audio to text conversion failed. Please check your Internet connection. Error code: "
+                + ex.getStatusCode() + "; cause: " + ex.getMessage());
+            }
             System.exit(1);
         }
     }
