@@ -130,7 +130,7 @@ public class Main {
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
                                 fileName + "." + videoExt, directory, fileName + "." + imageExt);
 
-                        boolean customFFmpeg = Boolean.parseBoolean(args[3]);
+                        boolean customFFmpeg = Boolean.parseBoolean(args[4]);
                         creator.setVideoSize(width, height, pixelFormat, customFFmpeg);
                         creator.setFrameRate(1);
                         creator.setCodecID(videoCodec, customFFmpeg);
