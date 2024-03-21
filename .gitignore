@@ -7,6 +7,7 @@ lib/
 jdk-19_linux-x64_bin.deb
 inputFile.txt
 resources/
+./application_default_credentials.json
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
