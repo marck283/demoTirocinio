@@ -62,7 +62,7 @@ public class Main {
 
             //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
             //Path p = f.toPath().toAbsolutePath();
-            Path p = Paths.get(Paths.get(args[0]).toFile().getCanonicalPath());
+            Path p = Paths.get(args[0]).toRealPath();
             try(Reader reader = Files.newBufferedReader(p)) {
                 JsonParser parser = new JsonParser(reader);
                 JsonArray array = parser.getJsonArray("array");
