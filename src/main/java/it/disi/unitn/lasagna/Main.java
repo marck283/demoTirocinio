@@ -48,7 +48,7 @@ public class Main {
         main.removeSelf();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if (checkVars(args)) {
             System.err.println("Il numero di argomenti forniti a questo programma non puo' essere" +
                     " diverso da 3 (se non si vuole utilizzare una rete neurale per la generazione delle immagini) o da 5" +
@@ -62,7 +62,7 @@ public class Main {
 
             //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
             //Path p = f.toPath().toAbsolutePath();
-            Path p = Paths.get(args[0]).toAbsolutePath();
+            Path p = Paths.get(Paths.get(args[0]).toFile().getCanonicalPath());
             try(Reader reader = Files.newBufferedReader(p)) {
                 JsonParser parser = new JsonParser(reader);
                 JsonArray array = parser.getJsonArray("array");
