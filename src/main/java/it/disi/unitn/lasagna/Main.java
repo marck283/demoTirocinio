@@ -1,9 +1,10 @@
 package it.disi.unitn.lasagna;
 
 import com.google.gson.JsonArray;
+import it.disi.unitn.FFMpeg;
 import it.disi.unitn.FFMpegBuilder;
 import it.disi.unitn.StringExt;
-import it.disi.unitn.TracksMerger;
+import it.disi.unitn.videocreator.TracksMerger;
 import it.disi.unitn.videocreator.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.NotEnoughArgumentsException;
@@ -146,14 +147,17 @@ public class Main {
                         creator.setAudioCodec(audioCodec);
 
                         creator.setVideoQuality(18);
-                        creator.createCommand(30L, TimeUnit.SECONDS);
+                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/);
+
+                        FFMpeg ffmpeg = builder.build();
+                        ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
 
                         builder.resetCommand(ffmpegFilePath);
 
                         String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + "." + videoExt,
                                 inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + "." + audioExt,
                                 outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + "." + videoExt;
-                        unitnMerger = builder.newTracksMerger(outputVideo, inputAudio, inputVideo);
+                        unitnMerger = builder.newTracksMerger(outputVideo, videoDir, videoExt, inputAudio, inputVideo);
                         unitnMerger.streamCopy(true);
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
@@ -161,7 +165,7 @@ public class Main {
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
 
                     builder.resetCommand(ffmpegFilePath);
-                    unitnMerger = builder.newTracksMerger("./output." + videoExt);
+                    unitnMerger = builder.newTracksMerger("./output." + videoExt, videoDir, videoExt);
                     unitnMerger.streamCopy(true);
 
                     List<String> ofileList = outputDir.getFileList();
