@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 class Description {
     private final String language, description;
 
@@ -13,8 +15,13 @@ class Description {
     }
 
     public static @NotNull Description parseJSON(@NotNull JsonObject json) {
+        Locale l = Locale.getDefault();
         if(json == null) {
-            System.err.println("Nessun testo fornito in input per la trasformazione in audio.");
+            if(l == Locale.ITALIAN || l == Locale.ITALY) {
+                System.err.println("Nessun testo fornito in input per la trasformazione in audio.");
+            } else {
+                System.err.println("No text given to be transformed into audio.");
+            }
             System.exit(1);
         }
         JsonElement language = json.get("text-language");
