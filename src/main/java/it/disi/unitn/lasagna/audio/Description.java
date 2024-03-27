@@ -25,16 +25,38 @@ class Description {
             System.exit(1);
         }
         JsonElement language = json.get("text-language");
+        String ltext = language.getAsString();
         if(language == null) {
             System.err.println("Language NULL");
             System.exit(2);
         }
+
+        if(ltext == null || ltext.isEmpty()) {
+            if(l == Locale.ITALY || l == Locale.ITALIAN) {
+                System.err.println("La lingua utilizzata non puo' essere null o una stringa vuota.");
+            } else {
+                System.err.println("The given language cannot be null or an empty string.");
+            }
+            System.exit(1);
+        }
+
         JsonElement tts = json.get("text-to-speech");
+        String ttsString = tts.getAsString();
         if(tts == null) {
             System.err.println("TTS NULL");
             System.exit(3);
         }
-        return new Description(language.getAsString(), tts.getAsString());
+
+        if(ttsString == null || ttsString.isEmpty()) {
+            if(l == Locale.ITALIAN || l == Locale.ITALY) {
+                System.err.println("Il valore del campo \"text-to-speech\" non puo' essere null o una stringa vuota.");
+            } else {
+                System.err.println("The \"text-to-speech\" field's value cannot be null or an empty string.");
+            }
+            System.exit(1);
+        }
+
+        return new Description(ltext, ttsString);
     }
 
     public String getLanguage() {
