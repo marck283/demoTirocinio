@@ -126,7 +126,8 @@ public class Main {
                     audioExt = "mp3";
                 }
 
-                int numAudioFiles = generator.generateAudio(audioExt);
+                String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
+                int numAudioFiles = generator.generateAudio(audioExt, voiceType);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;

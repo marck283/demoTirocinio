@@ -2,6 +2,7 @@
   "codec": "wmv2",
   "audioCodec": "wmav2",
   "pixelFormat": "yuv420p",
+  "voiceType": "female",
   "array": [
     {
       "stats": [
