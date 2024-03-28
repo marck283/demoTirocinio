@@ -41,7 +41,7 @@ class Audio {
 
         if(!(voiceType.equals("female") || voiceType.equals("male"))) {
             throw new InvalidArgumentException("The voice type can only be \"female\" or \"male\".", "Il tipo di voce " +
-                    "richiesto puo' essere soltanto \"female\" o \"male\"");
+                    "richiesto puo' essere soltanto \"female\" o \"male\".");
         }
 
         // Instantiates a client
