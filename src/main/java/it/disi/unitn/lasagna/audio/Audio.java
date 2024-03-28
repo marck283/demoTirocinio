@@ -4,6 +4,7 @@ import com.google.api.gax.rpc.ApiException;
 import com.google.cloud.texttospeech.v1.*;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.exceptions.InvalidArgumentException;
+import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileOutputStream;
@@ -21,7 +22,22 @@ class Audio {
 
     //private String description;
 
-    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) {
+    private void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
+        if(str == null || str.isEmpty()) {
+            throw new NotEnoughArgumentsException(msg, itmsg);
+        }
+    }
+
+    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) throws NotEnoughArgumentsException {
+        checkNullOrEmpty(description, "The given description cannot be null or an empty string.", "La descrizione " +
+                "fornita non puo' essere null o una stringa vuota.");
+
+        checkNullOrEmpty(language, "The given language cannot be null or an empty string.", "La lingua fornita " +
+                "non puo' essere null o una stringa vuota.");
+
+        checkNullOrEmpty(voiceType, "The given voice type cannot be null or an empty string.", "Il tipo di voce " +
+                "richiesto non puo' essere null o una stringa vuota.");
+
         // Instantiates a client
         try {
             //this.description = description;
