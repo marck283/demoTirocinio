@@ -22,13 +22,14 @@ class Audio {
 
     //private String description;
 
-    private void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
+    private static void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
         if(str == null || str.isEmpty()) {
             throw new NotEnoughArgumentsException(msg, itmsg);
         }
     }
 
-    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) throws NotEnoughArgumentsException {
+    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) throws NotEnoughArgumentsException,
+            InvalidArgumentException {
         checkNullOrEmpty(description, "The given description cannot be null or an empty string.", "La descrizione " +
                 "fornita non puo' essere null o una stringa vuota.");
 
@@ -37,6 +38,11 @@ class Audio {
 
         checkNullOrEmpty(voiceType, "The given voice type cannot be null or an empty string.", "Il tipo di voce " +
                 "richiesto non puo' essere null o una stringa vuota.");
+
+        if(!(voiceType.equals("female") || voiceType.equals("male"))) {
+            throw new InvalidArgumentException("The voice type can only be \"female\" or \"male\".", "Il tipo di voce " +
+                    "richiesto puo' essere soltanto \"female\" o \"male\"");
+        }
 
         // Instantiates a client
         try {
