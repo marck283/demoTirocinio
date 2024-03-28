@@ -35,6 +35,7 @@ class Audio {
             VoiceSelectionParams.Builder builder = VoiceSelectionParams.newBuilder()
                     .setLanguageCode(language);
             if(voiceType.equals("female")) {
+                //Female voice
                 builder.setSsmlGender(SsmlVoiceGender.FEMALE);
             } else {
                 //Male voice. Gender neutral voices are not supported anymore
