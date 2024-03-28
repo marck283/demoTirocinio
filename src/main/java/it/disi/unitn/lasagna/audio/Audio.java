@@ -60,6 +60,7 @@ class Audio {
             voice = builder.build();
 
             // Select the type of audio file you want returned
+            //DA IMPLEMENTARE: richiesta controllo encoding audio
             audioConfig = AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.MP3).build();
 
             locale = Locale.getDefault();
@@ -70,7 +71,15 @@ class Audio {
         }
     }
 
-    public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException {
+    public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException, NotEnoughArgumentsException {
+        checkNullOrEmpty(extension, "The file's extension cannot be null or an empty string.", "L'estensione " +
+                "del file non puo' essere null o una stringa vuota.");
+
+        if(index < 0) {
+            throw new InvalidArgumentException("The given index cannot be less than 0.", "L'indice fornito non puo' essere " +
+                    "minore di 0.");
+        }
+
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
             //System.err.println(input);
