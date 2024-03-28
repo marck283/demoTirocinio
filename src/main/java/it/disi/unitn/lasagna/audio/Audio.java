@@ -54,8 +54,7 @@ class Audio {
 
             // Build the voice request, select the language code (default is "en-US") and the ssml voice gender
             // ("neutral")
-            VoiceSelectionParams.Builder builder = VoiceSelectionParams.newBuilder()
-                    .setLanguageCode(language);
+            VoiceSelectionParams.Builder builder = VoiceSelectionParams.newBuilder().setLanguageCode(language);
             if(voiceType.equals("female")) {
                 //Female voice
                 builder.setSsmlGender(SsmlVoiceGender.FEMALE);
