@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 //import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -128,20 +127,7 @@ public class Main {
                 }
 
                 String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
-                int numAudioFiles = 0;
-                if(voiceType.equals("female") || voiceType.equals("male")) {
-                    numAudioFiles = generator.generateAudio(audioExt, voiceType);
-                } else {
-                    Locale l = Locale.getDefault();
-                    if(l == Locale.ITALY || l == Locale.ITALIAN) {
-                        System.err.println("Tipo di voce non permesso. Gli unici tipi di voce supportati " +
-                                "sono \"female\" e \"male\".");
-                    } else {
-                        System.err.println("Illegal voice type. The only supported voice types are " +
-                                "\"female\" and \"male\".");
-                    }
-                    System.exit(1);
-                }
+                int numAudioFiles = generator.generateAudio(audioExt, voiceType);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
