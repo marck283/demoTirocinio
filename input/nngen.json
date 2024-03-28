@@ -2,6 +2,7 @@
   "codec": "mjpeg",
   "audioCodec": "mpeg4",
   "pixelFormat": "yuvj420p",
+  "voiceType": "male",
   "array": [{
     "stats": [
       {

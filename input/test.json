@@ -2,6 +2,7 @@
   "codec": "mjpeg",
   "audioCodec": "h264",
   "pixelFormat": "yuvj420p",
+  "voiceType": "female",
   "array": [
     {
       "stats": [
