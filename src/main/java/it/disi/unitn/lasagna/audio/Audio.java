@@ -21,7 +21,7 @@ class Audio {
 
     //private String description;
 
-    public Audio(@NotNull String description, @NotNull String language) {
+    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) {
         // Instantiates a client
         try {
             //this.description = description;
@@ -32,10 +32,15 @@ class Audio {
 
             // Build the voice request, select the language code (default is "en-US") and the ssml voice gender
             // ("neutral")
-            voice = VoiceSelectionParams.newBuilder()
-                    .setLanguageCode(language)
-                    .setSsmlGender(SsmlVoiceGender.FEMALE) //Gender-neutral voices are not supported anymore
-                    .build();
+            VoiceSelectionParams.Builder builder = VoiceSelectionParams.newBuilder()
+                    .setLanguageCode(language);
+            if(voiceType.equals("female")) {
+                builder.setSsmlGender(SsmlVoiceGender.FEMALE);
+            } else {
+                //Male voice. Gender neutral voices are not supported anymore
+                builder.setSsmlGender(SsmlVoiceGender.MALE);
+            }
+            voice = builder.build();
 
             // Select the type of audio file you want returned
             audioConfig = AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.MP3).build();
