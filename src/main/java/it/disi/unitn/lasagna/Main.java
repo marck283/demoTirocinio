@@ -61,7 +61,15 @@ public class Main {
             File f = new File(args[0]);
 
             //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
-            //Path p = f.toPath().toAbsolutePath();
+            //Per ragioni di sicurezza, utilizziamo Path.toRealPath() per ritornare il Path vero e proprio del file perché
+            //rimuove parti ridondanti del path. Il metodo "toRealPath()", infatti, risolve il path comunicato, controllando
+            //che il file esista effettivamente.
+            //ESEMPIO: il seguente blocco di codice è vulnerabile ad un Path Traversal Attack:
+            //Path p = Paths.get(Paths.get(args[0]).toFile().getCanonicalPath());
+            //try(Reader reader = Files.newBufferedReader(p)) { ... }
+            //La vulnerabilità si presenta perché getCanonicalPath(), così come toAbsolutePath(), non rimuove le sequenze
+            //di escaping come "../". Si veda qui (https://owasp.org/www-community/attacks/Path_Traversal) per maggiori
+            //informazioni su questa vulnerabilità.
             Path p = Paths.get(args[0]).toRealPath();
             try(Reader reader = Files.newBufferedReader(p)) {
                 JsonParser parser = new JsonParser(reader);
