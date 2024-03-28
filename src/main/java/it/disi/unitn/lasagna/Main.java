@@ -127,7 +127,7 @@ public class Main {
                     audioExt = "mp3";
                 }
 
-                String voiceType = parser.getString("voiceType"); //Puo' essere solo "female" o "male"
+                String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
                 int numAudioFiles = 0;
                 if(voiceType.equals("female") || voiceType.equals("male")) {
                     numAudioFiles = generator.generateAudio(audioExt, voiceType);
