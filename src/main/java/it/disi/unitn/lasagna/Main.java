@@ -12,6 +12,7 @@ import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
 import it.disi.unitn.json.jsonparser.JsonParser;
+import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.scale.scalingalgs.Bicubic;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -158,7 +159,7 @@ public class Main {
 
                         creator.setVideoQuality(18);
                         creator.setVideoStreamCopy(streamCopy.equals("true"));
-                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/);
+                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/, null, new Bicubic(0.3333, 0.3333));
 
                         FFMpeg ffmpeg = builder.build();
                         ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
