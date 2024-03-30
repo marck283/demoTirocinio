@@ -81,7 +81,8 @@ public class Main {
                         tempFile = "./inputFile.txt",
                         command, ffmpegFilePath, videoCodec = parser.getString("codec"),
                         audioCodec = parser.getString("audioCodec"),
-                        pixelFormat = parser.getString("pixelFormat");
+                        pixelFormat = parser.getString("pixelFormat"),
+                        streamCopy = parser.getString("streamCopy");
 
                 File inputFile = new File(tempFile);
                 if(!inputFile.exists()) {
@@ -156,6 +157,7 @@ public class Main {
                         creator.setAudioCodec(audioCodec);
 
                         creator.setVideoQuality(18);
+                        creator.setVideoStreamCopy(streamCopy.equals("true"));
                         creator.createCommand(true/*30L, TimeUnit.SECONDS*/);
 
                         FFMpeg ffmpeg = builder.build();

@@ -1,6 +1,7 @@
 {
   "codec": "mjpeg",
   "audioCodec": "mpeg4",
+  "streamCopy": "true",
   "pixelFormat": "yuvj420p",
   "voiceType": "male",
   "array": [{

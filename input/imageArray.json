@@ -1,6 +1,7 @@
 {
   "codec": "wmv2",
   "audioCodec": "wmav2",
+  "streamCopy": "false",
   "pixelFormat": "yuv420p",
   "voiceType": "female",
   "array": [
