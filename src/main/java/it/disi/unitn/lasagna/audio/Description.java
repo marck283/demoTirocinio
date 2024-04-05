@@ -16,14 +16,15 @@ class Description {
 
     public static @NotNull Description parseJSON(@NotNull JsonObject json) {
         Locale l = Locale.getDefault();
-        if(json == null) {
+        /*if(json == null) {
+            //This code is unreachable
             if(l == Locale.ITALIAN || l == Locale.ITALY) {
                 System.err.println("Nessun testo fornito in input per la trasformazione in audio.");
             } else {
                 System.err.println("No text given to be transformed into audio.");
             }
             System.exit(1);
-        }
+        }*/
         JsonElement language = json.get("text-language");
         if(language == null) {
             System.err.println("Language NULL");

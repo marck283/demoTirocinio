@@ -57,32 +57,7 @@ public class File extends java.io.File {
         }*/
 
         for(String path: dirPaths) {
-            //File file = new File(path);
-
             Files.createDirectories(getPath(path, ""));
-
-            /*if(SystemUtils.IS_OS_WINDOWS) {
-                file.mkdirs();
-            } else {
-                if(SystemUtils.IS_OS_LINUX) {
-                    //Possibile punto di rottura del programma. Devo richiedere i permessi di amministratore
-                    //per entrambi i comandi?
-                    ProcessBuilder builder = new ProcessBuilder("bash", "-c", "mkdir -p " + file.getPath() +
-                            "; chmod +w " + file.getPath());
-                    builder.inheritIO();
-
-                    Process p = builder.start();
-
-                    int exitCode = p.waitFor();
-                    if(exitCode != 0) {
-                        System.out.println("Exit code: " + p.exitValue());
-                        p.destroy(); //Kill the process to release resources
-                        throw new Exception("An error has occurred.");
-                    }
-                } else {
-                    throw new UnsupportedOperatingSystemException();
-                }
-            }*/
         }
     }
 

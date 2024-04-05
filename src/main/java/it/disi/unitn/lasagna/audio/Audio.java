@@ -67,12 +67,12 @@ class Audio {
             // Select the type of audio file you want returned
             //DA IMPLEMENTARE: richiesta controllo encoding audio
             AudioConfig.Builder builder1 = AudioConfig.newBuilder();
-            builder1 = builder1.setAudioEncoding(AudioEncoding.MP3);
+            builder1.setAudioEncoding(AudioEncoding.MP3);
             audioConfig = builder1.build();
 
             locale = Locale.getDefault();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             System.err.println(ex.getLocalizedMessage());
             System.exit(1);
         }
