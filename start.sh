@@ -15,4 +15,4 @@ if [ $# -ne 5 ]; then
   echo "NOTA: sia il valore dell'altezza che quello della larghezza non possono essere negativi.">&2;
 fi
 
-java -jar ./tirocinio-shadow-1.0.jar $1 $2 $3 $4 $5
+java -jar ./tirocinio-shadow-1.0.jar "$1" "$2" "$3" "$4" "$5" #Double quote to prevent globbing and word splitting

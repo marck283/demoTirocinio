@@ -12,6 +12,7 @@ import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
 import it.disi.unitn.json.jsonparser.JsonParser;
+import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.scale.scalingalgs.Bicubic;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,7 +82,8 @@ public class Main {
                         tempFile = "./inputFile.txt",
                         command, ffmpegFilePath, videoCodec = parser.getString("codec"),
                         audioCodec = parser.getString("audioCodec"),
-                        pixelFormat = parser.getString("pixelFormat");
+                        pixelFormat = parser.getString("pixelFormat"),
+                        streamCopy = parser.getString("streamCopy");
 
                 File inputFile = new File(tempFile);
                 if(!inputFile.exists()) {
@@ -126,7 +128,9 @@ public class Main {
                     audioExt = "mp3";
                 }
 
-                int numAudioFiles = generator.generateAudio(audioExt);
+                String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
+                String audioEncoding = parser.getString("audioEncoding"); //Può essere "mp3", "linear16", "ogg_opus", "mulaw" o "alaw"
+                int numAudioFiles = generator.generateAudio(audioExt, voiceType, audioEncoding);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
                     TracksMerger unitnMerger;
@@ -155,7 +159,10 @@ public class Main {
                         creator.setAudioCodec(audioCodec);
 
                         creator.setVideoQuality(18);
-                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/);
+                        creator.setVideoStreamCopy(streamCopy.equals("true"));
+
+                        //Gestire richiesta range colore
+                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/, null, new Bicubic(0.3333, 0.3333), true);
 
                         FFMpeg ffmpeg = builder.build();
                         ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
