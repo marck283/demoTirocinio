@@ -1,6 +1,7 @@
 {
   "codec": "mjpeg",
   "audioCodec": "h264",
+  "audioEncoding": "mulaw",
   "streamCopy": "true",
   "pixelFormat": "yuv420p",
   "voiceType": "female",

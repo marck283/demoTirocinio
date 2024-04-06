@@ -28,21 +28,14 @@ class Audio {
         }
     }
 
-    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType) throws NotEnoughArgumentsException,
+    public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType, @NotNull String encoding)
+            throws NotEnoughArgumentsException,
             InvalidArgumentException {
         checkNullOrEmpty(description, "The given description cannot be null or an empty string.", "La descrizione " +
                 "fornita non puo' essere null o una stringa vuota.");
 
         checkNullOrEmpty(language, "The given language cannot be null or an empty string.", "La lingua fornita " +
                 "non puo' essere null o una stringa vuota.");
-
-        checkNullOrEmpty(voiceType, "The given voice type cannot be null or an empty string.", "Il tipo di voce " +
-                "richiesto non puo' essere null o una stringa vuota.");
-
-        if(!(voiceType.equals("female") || voiceType.equals("male"))) {
-            throw new InvalidArgumentException("The voice type can only be \"female\" or \"male\".", "Il tipo di voce " +
-                    "richiesto puo' essere soltanto \"female\" o \"male\".");
-        }
 
         // Instantiates a client
         try {
@@ -55,19 +48,28 @@ class Audio {
             // Build the voice request, select the language code (default is "en-US") and the ssml voice gender
             // ("neutral")
             VoiceSelectionParams.Builder builder = VoiceSelectionParams.newBuilder().setLanguageCode(language);
-            if(voiceType.equals("female")) {
-                //Female voice
-                builder.setSsmlGender(SsmlVoiceGender.FEMALE);
-            } else {
-                //Male voice. Gender neutral voices are not supported anymore
-                builder.setSsmlGender(SsmlVoiceGender.MALE);
+            switch(voiceType) {
+                case "female" -> //Female voice
+                        builder.setSsmlGender(SsmlVoiceGender.FEMALE);
+                case "male" -> //Male voice. Gender neutral voices are not supported anymore
+                        builder.setSsmlGender(SsmlVoiceGender.MALE);
+                default -> throw new InvalidArgumentException("The voice type can only be \"female\" or \"male\".", "Il " +
+                        "tipo di voce richiesto puo' essere soltanto \"female\" o \"male\".");
             }
             voice = builder.build();
 
             // Select the type of audio file you want returned
-            //DA IMPLEMENTARE: richiesta controllo encoding audio
             AudioConfig.Builder builder1 = AudioConfig.newBuilder();
-            builder1.setAudioEncoding(AudioEncoding.MP3);
+            switch(encoding) {
+                case "mp3" -> builder1.setAudioEncoding(AudioEncoding.MP3);
+                case "linear16" -> builder1.setAudioEncoding(AudioEncoding.LINEAR16);
+                case "ogg_opus" -> builder1.setAudioEncoding(AudioEncoding.OGG_OPUS);
+                case "mulaw" -> builder1.setAudioEncoding(AudioEncoding.MULAW);
+                case "alaw" -> builder1.setAudioEncoding(AudioEncoding.ALAW);
+                default -> throw new InvalidArgumentException("The encoding must be equal to \"mp3\", \"linear16\", " +
+                        "\"ogg_opus\", \"mulaw\" or \"alaw\".", "La codifica audio deve essere uguale a \"mp3\", " +
+                        "\"linear16\", \"ogg_opus\", \"mulaw\" o \"alaw\".");
+            }
             audioConfig = builder1.build();
 
             locale = Locale.getDefault();
@@ -111,7 +113,7 @@ class Audio {
         } catch(ApiException ex) {
             if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
                 System.err.println("Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
-                        " Internet per eventuali problemi. Codice di errore: " + ex.getStatusCode() + "; ragione: " +
+                        " Internet per eventuali problemi. Codice errore: " + ex.getStatusCode() + "; ragione: " +
                         ex.getMessage());
             } else {
                 System.err.println("Audio to text conversion failed. Please check your Internet connection. Error code: "
