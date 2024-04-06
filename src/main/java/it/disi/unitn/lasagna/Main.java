@@ -160,7 +160,9 @@ public class Main {
 
                         creator.setVideoQuality(18);
                         creator.setVideoStreamCopy(streamCopy.equals("true"));
-                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/, null, new Bicubic(0.3333, 0.3333));
+
+                        //Gestire richiesta range colore
+                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/, null, new Bicubic(0.3333, 0.3333), true);
 
                         FFMpeg ffmpeg = builder.build();
                         ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
