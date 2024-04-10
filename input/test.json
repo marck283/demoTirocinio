@@ -4,6 +4,7 @@
   "audioEncoding": "mulaw",
   "streamCopy": "true",
   "pixelFormat": "yuv420p",
+  "inputColorFullRange": "true",
   "voiceType": "female",
   "array": [
     {

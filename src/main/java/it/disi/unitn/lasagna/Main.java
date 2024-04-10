@@ -152,17 +152,15 @@ public class Main {
                         if(videoCodec.equals("mjpeg") && pixelFormat.startsWith("yuv") && !pixelFormat.startsWith("yuvj")) {
                             creator.setOutFullRange(true);
                         }
-                        /*if(videoCodec.startsWith("wmv")) {
-                            //Imposta il codec audio al formato WMAv2 (Windows Media Audio)
-                            creator.setAudioCodec("wmav2");
-                        }*/
+
                         creator.setAudioCodec(audioCodec);
 
                         creator.setVideoQuality(18);
                         creator.setVideoStreamCopy(streamCopy.equals("true"));
 
-                        //Gestire richiesta range colore
-                        creator.createCommand(true/*30L, TimeUnit.SECONDS*/, null, new Bicubic(0.3333, 0.3333), true);
+                        String inColFullRange = parser.getString("inputColorFullRange");
+                        creator.createCommand(true, null, new Bicubic(0.3333, 0.3333),
+                                inColFullRange.equals("true"));
 
                         FFMpeg ffmpeg = builder.build();
                         ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
@@ -177,24 +175,23 @@ public class Main {
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
 
-                    File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
-
                     builder.resetCommand(ffmpegFilePath);
                     unitnMerger = builder.newTracksMerger("./output." + videoExt, videoDir, videoExt);
                     unitnMerger.streamCopy(true);
 
-                    List<String> ofileList = outputDir.getFileList();
-                    //Collections.sort(ofileList);
+                    File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
+                    List<String> ofileList = outputDir.getFileList(); //Ottiene la lista ordinata del contenuto della cartella
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
                 } catch (NotEnoughArgumentsException | InvalidArgumentException |
                          UnsupportedOperatingSystemException | IOException | RuntimeException ex) {
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                     System.err.println(ex.getMessage());
                 } finally {
                     cleanup(inputFile);
                 }
             } catch(Exception ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
+                System.err.println(ex.getMessage());
             }
         }
     }

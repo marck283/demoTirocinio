@@ -1,12 +1,5 @@
 package it.disi.unitn.lasagna;
 
-/*import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteWatchdog;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;*/
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
@@ -50,12 +43,6 @@ public class File extends java.io.File {
                     "stringa vuota.");
         }
 
-        /*for(String path: dirPaths) {
-            if(path == null || path.isEmpty()) {
-                throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo non può essere null.");
-            }
-        }*/
-
         for(String path: dirPaths) {
             Files.createDirectories(getPath(path, ""));
         }
@@ -86,11 +73,6 @@ public class File extends java.io.File {
      * @throws IOException Se si verifica un errore di I/O
      */
     public List<String> getFileList() throws IOException {
-        //Si controlli se questa chiamata a isDirectory() possa essere sostituita con
-        //una chiamata a Files.isDirectory().
-        /*if(!isDirectory()) {
-            throw new FileNotFoundException("Il percorso fornito non denota una directory.");
-        }*/
         if(!Files.isDirectory(getPath(getPath(), ""))) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
         }
@@ -108,18 +90,6 @@ public class File extends java.io.File {
 
         //La lista appena ottenuta non è ordinata in alcun ordine specifico, quindi la devo ordinare in ordine crescente.
         Collections.sort(filePathList);
-
-        //Controllare anche se sostituire questo pezzo di codice con un altro compatibile con
-        //la chiamata a Files.list().
-        /*java.io.File[] fileList = listFiles();
-        if(fileList == null) {
-            throw new FileNotFoundException("Il percorso fornito non denota una directory.");
-        }
-
-        List<String> filePathList = new ArrayList<>();
-        for (java.io.File file : fileList) {
-            filePathList.add(file.getPath());
-        }*/
 
         return filePathList;
     }

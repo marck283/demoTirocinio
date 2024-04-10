@@ -4,6 +4,7 @@
   "audioEncoding": "mp3",
   "streamCopy": "false",
   "pixelFormat": "yuv420p",
+  "inputColorFullRange": "true",
   "voiceType": "female",
   "array": [
     {
