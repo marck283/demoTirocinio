@@ -12,6 +12,10 @@ import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
 import it.disi.unitn.json.jsonparser.JsonParser;
+import it.disi.unitn.videocreator.filtergraph.VideoSimpleFilterGraph;
+import it.disi.unitn.videocreator.filtergraph.filterchain.VideoSimpleFilterChain;
+import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.format.Format;
+import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.scale.Scale;
 import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.scale.scalingalgs.Bicubic;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
@@ -120,16 +124,21 @@ public class Main {
                 }
 
                 String videoExt, audioExt;
+                String audioEncoding = parser.getString("audioEncoding"); //Può essere "mp3", "linear16", "ogg_opus", "mulaw" o "alaw"
                 if(videoCodec.startsWith("wmv")) {
                     videoExt = "wmv";
                     audioExt = "wma";
                 } else {
-                    videoExt = "mp4";
-                    audioExt = "mp3";
+                    if(audioEncoding.startsWith("mulaw")) {
+                        audioExt = "mulaw";
+                        videoExt = "mov";
+                    } else {
+                        audioExt = "mp3";
+                        videoExt = "mp4";
+                    }
                 }
 
                 String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
-                String audioEncoding = parser.getString("audioEncoding"); //Può essere "mp3", "linear16", "ogg_opus", "mulaw" o "alaw"
                 int numAudioFiles = generator.generateAudio(audioExt, voiceType, audioEncoding);
                 try {
                     final FFMpegBuilder builder = new FFMpegBuilder(command);
@@ -141,13 +150,27 @@ public class Main {
                         string.padStart();
                         String fileName = string.getVal();
                         VideoCreator creator = builder.newVideoCreator(videoDir + "/" +
-                                fileName + "." + videoExt, directory, fileName + "." + imageExt);
+                                fileName + "." + videoExt);
+                        creator.addInput(directory + "/" + fileName + "." + imageExt);
 
                         boolean customFFmpeg = Boolean.parseBoolean(args[4]);
-                        creator.setVideoSize(width, height, pixelFormat, customFFmpeg);
+                        //creator.setVideoSize(width, height, pixelFormat, customFFmpeg);
                         creator.setFrameRate(1);
                         creator.setCodecID(videoCodec, customFFmpeg);
+
                         creator.setPixelFormat(pixelFormat); //Formato dei pixel
+
+                        Scale scale = new Scale();
+                        creator.setScaleParams(true, scale, new Bicubic(0.3333, 0.3333), String.valueOf(width),
+                                String.valueOf(height), "auto", "bt709", "auto",
+                                "auto", "init", "0", "disable", 0);
+
+                        VideoSimpleFilterGraph vsfg = new VideoSimpleFilterGraph();
+                        VideoSimpleFilterChain vsfc = new VideoSimpleFilterChain();
+                        Format format = creator.setFormat(new Format());
+                        vsfc.addAllFilters(scale, format);
+                        vsfg.addFilterChain(vsfc);
+                        creator.setVideoSimpleFilterGraph(vsfg);
 
                         if(videoCodec.equals("mjpeg") && pixelFormat.startsWith("yuv") && !pixelFormat.startsWith("yuvj")) {
                             creator.setOutFullRange(true);
@@ -158,9 +181,9 @@ public class Main {
                         creator.setVideoQuality(18);
                         creator.setVideoStreamCopy(streamCopy.equals("true"));
 
-                        String inColFullRange = parser.getString("inputColorFullRange");
-                        creator.createCommand(true, null, new Bicubic(0.3333, 0.3333),
-                                inColFullRange.equals("true"));
+                        //String inColFullRange = parser.getString("inputColorFullRange");
+                        creator.createCommand(/*true, null, new Bicubic(0.3333, 0.3333),
+                                inColFullRange.equals("true")*/);
 
                         FFMpeg ffmpeg = builder.build();
                         ffmpeg.executeCMD(30L, TimeUnit.SECONDS);
@@ -170,7 +193,7 @@ public class Main {
                         String inputVideo = "./src/main/resources/it/disi/unitn/input/video/" + fileName + "." + videoExt,
                                 inputAudio = "./src/main/resources/it/disi/unitn/input/audio/" + fileName + "." + audioExt,
                                 outputVideo = "./src/main/resources/it/disi/unitn/output/partial/" + fileName + "." + videoExt;
-                        unitnMerger = builder.newTracksMerger(outputVideo, videoDir, videoExt, inputAudio, inputVideo);
+                        unitnMerger = builder.newTracksMerger(outputVideo, /*videoDir, videoExt, */inputAudio, inputVideo);
                         unitnMerger.streamCopy(true);
                         unitnMerger.mergeAudioWithVideo(1L, TimeUnit.MINUTES);
                     }
