@@ -2,6 +2,8 @@
   "codec": "wmv2",
   "audioCodec": "wmav2",
   "audioEncoding": "mp3",
+  "audioExtension": "wma",
+  "videoExtension": "wmv",
   "streamCopy": "false",
   "pixelFormat": "yuv420p",
   "voiceType": "female",

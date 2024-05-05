@@ -8,7 +8,7 @@ fi
 
 if [ $# -ne 5 ]; then
   echo "Errore: il numero di argomenti forniti a questo script non puo' essere diverso da 5.">&2;
-  echo "Utilizzo: ./start.sh <percorso del file JAR del programma> <valore booleano \"true\" o \"false\"> <larghezza>
+  echo "Utilizzo: ./start.sh <percorso del file JSON in input al programma> <valore booleano \"true\" o \"false\"> <larghezza>
   <altezza> <valore booleano \"true\" o \"false\">. Si noti che il primo valore booleano indica al programma se utilizzare
   una rete neurale o meno, mentre il secondo indica se l'utente intenda eseguire il programma usando una versione di
   FFmpeg appena compilata.">&2;

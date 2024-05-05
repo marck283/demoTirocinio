@@ -1,9 +1,11 @@
 {
   "codec": "mjpeg",
   "audioCodec": "h264",
-  "audioEncoding": "mulaw",
+  "audioEncoding": "mp3",
+  "audioExtension": "mp3",
+  "videoExtension": "mp4",
   "streamCopy": "true",
-  "pixelFormat": "yuv420p",
+  "pixelFormat": "yuvj420p",
   "voiceType": "female",
   "array": [
     {

@@ -25,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-//import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -123,21 +122,8 @@ public class Main {
                     ffmpegFilePath = null;
                 }
 
-                String videoExt, audioExt;
+                String videoExt = parser.getString("videoExtension"), audioExt = parser.getString("audioExtension");
                 String audioEncoding = parser.getString("audioEncoding"); //Può essere "mp3", "linear16", "ogg_opus", "mulaw" o "alaw"
-                if(videoCodec.startsWith("wmv")) {
-                    videoExt = "wmv";
-                    audioExt = "wma";
-                } else {
-                    if(audioEncoding.startsWith("mulaw")) {
-                        audioExt = "mulaw";
-                        videoExt = "mov";
-                    } else {
-                        audioExt = "mp3";
-                        videoExt = "mp4";
-                    }
-                }
-
                 String voiceType = parser.getString("voiceType"); //Può essere solo "female" o "male"
                 int numAudioFiles = generator.generateAudio(audioExt, voiceType, audioEncoding);
                 try {
@@ -171,10 +157,6 @@ public class Main {
                         vsfc.addAllFilters(scale, format);
                         vsfg.addFilterChain(vsfc);
                         creator.setVideoSimpleFilterGraph(vsfg);
-
-                        if(videoCodec.equals("mjpeg") && pixelFormat.startsWith("yuv") && !pixelFormat.startsWith("yuvj")) {
-                            creator.setOutFullRange(true);
-                        }
 
                         creator.setAudioCodec(audioCodec);
 
