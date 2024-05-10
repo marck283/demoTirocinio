@@ -2,6 +2,8 @@ package it.disi.unitn.lasagna.audio;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.disi.unitn.StringExt;
+import it.disi.unitn.exceptions.InvalidArgumentException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -14,6 +16,11 @@ class Description {
         this.description = description;
     }
 
+    /**
+     * This method parses the given JsonObject instance looking for the "text-language" and "text-to-speech" values.
+     * @param json The given JsonObject instance.
+     * @return A new instance of this class
+     */
     public static @NotNull Description parseJSON(@NotNull JsonObject json) {
         JsonElement language = json.get("text-language");
         if(language == null) {
@@ -23,7 +30,7 @@ class Description {
 
         String ltext = language.getAsString();
         Locale l = Locale.getDefault();
-        if(ltext == null || ltext.isEmpty()) {
+        if(StringExt.checkNullOrEmpty(ltext)) {
             if(l == Locale.ITALY || l == Locale.ITALIAN) {
                 System.err.println("La lingua utilizzata non puo' essere null o una stringa vuota.");
             } else {
@@ -39,7 +46,7 @@ class Description {
         }
 
         String ttsString = tts.getAsString();
-        if(ttsString == null || ttsString.isEmpty()) {
+        if(StringExt.checkNullOrEmpty(ttsString)) {
             if(l == Locale.ITALIAN || l == Locale.ITALY) {
                 System.err.println("Il valore del campo \"text-to-speech\" non puo' essere null o una stringa vuota.");
             } else {
@@ -51,10 +58,18 @@ class Description {
         return new Description(ltext, ttsString);
     }
 
+    /**
+     * Returns the "language" field's value.
+     * @return The "language" field's value
+     */
     public String getLanguage() {
         return language;
     }
 
+    /**
+     * Returns the "description" field's value.
+     * @return The "description" field's value
+     */
     public String getDescription() {
         return description;
     }

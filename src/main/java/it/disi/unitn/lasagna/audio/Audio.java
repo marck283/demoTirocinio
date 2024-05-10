@@ -22,12 +22,30 @@ class Audio {
 
     //private String description;
 
+    /**
+     * Checks if the given string is null or empty.
+     * @param str The given string.
+     * @param msg The English message if the result is "True".
+     * @param itmsg The Italian message if the result is "True".
+     * @throws NotEnoughArgumentsException If the given string is null or empty
+     */
     private static void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
         if(str == null || str.isEmpty()) {
             throw new NotEnoughArgumentsException(msg, itmsg);
         }
     }
 
+    /**
+     * This class's constructor
+     * @param description The description to be narrated in the audio track. Cannot be null or an empty string.
+     * @param language The langage spoken by the selected voice. Cannot be null or an empty string.
+     * @param voiceType The given voice type. Can be either "male" or "female". Cannot be null or an empty string.
+     * @param encoding The given audio encoding. Cannot be null or an empty string. Must be equal to "mp3", "linear16",
+     *                 "ogg_opus", "mulaw" or "alaw" and must be compatible with the audio output format.
+     * @throws NotEnoughArgumentsException If any of the given parameters is null or an empty string.
+     * @throws InvalidArgumentException If the given voice type or the given encoding values are incompatible with the
+     * specification given above.
+     */
     public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType, @NotNull String encoding)
             throws NotEnoughArgumentsException,
             InvalidArgumentException {
@@ -36,6 +54,13 @@ class Audio {
 
         checkNullOrEmpty(language, "The given language cannot be null or an empty string.", "La lingua fornita " +
                 "non puo' essere null o una stringa vuota.");
+
+        checkNullOrEmpty(voiceType, "The voice type can only be \"female\" or \"male\".", "Il " +
+                "tipo di voce richiesto puo' essere soltanto \"female\" o \"male\".");
+
+        checkNullOrEmpty(encoding, "The encoding must be equal to \"mp3\", \"linear16\", " +
+                "\"ogg_opus\", \"mulaw\" or \"alaw\".", "La codifica audio deve essere uguale a \"mp3\", " +
+                "\"linear16\", \"ogg_opus\", \"mulaw\" o \"alaw\".");
 
         // Instantiates a client
         try {
@@ -80,6 +105,13 @@ class Audio {
         }
     }
 
+    /**
+     * Generates the output audio file.
+     * @param index The file index. This parameter is used to name the file.
+     * @param extension The file's extension.
+     * @throws InvalidArgumentException If the given index is less than 0
+     * @throws NotEnoughArgumentsException If the given extension is null or an empty string
+     */
     public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException, NotEnoughArgumentsException {
         checkNullOrEmpty(extension, "The file's extension cannot be null or an empty string.", "L'estensione " +
                 "del file non puo' essere null o una stringa vuota.");

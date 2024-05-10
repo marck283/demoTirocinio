@@ -64,17 +64,17 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
-    implementation platform('com.google.cloud:libraries-bom:26.37.0')
+    implementation platform('com.google.cloud:libraries-bom:26.39.0')
 
     implementation 'commons-io:commons-io:2.16.1'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'commons-cli:commons-cli:1.6.0'
+    implementation 'commons-cli:commons-cli:1.7.0'
     implementation 'org.apache.commons:commons-exec:1.4.0'
 
     implementation 'org.slf4j:slf4j-api:2.0.13'
-    implementation ('com.google.cloud:google-cloud-texttospeech:2.42.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.19-beta7' //Ultima versione
-    implementation 'org.burningwave:core:12.64.3'
+    implementation ('com.google.cloud:google-cloud-texttospeech:2.44.0')
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.19-beta10' //Ultima versione
+    implementation 'org.burningwave:core:12.65.1'
 
 }
 
