@@ -1,5 +1,6 @@
 package it.disi.unitn.lasagna;
 
+import it.disi.unitn.StringExt;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
@@ -38,7 +39,7 @@ public class File extends java.io.File {
      */
     public static void makeDirs(@NotNull String @NotNull ... dirPaths)
             throws Exception {
-        if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(path -> path == null || path.isEmpty())) {
+        if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(StringExt::checkNullOrEmpty)) {
             throw new IllegalArgumentException("Nessuno dei valori passati a questo metodo puo' essere null o una " +
                     "stringa vuota.");
         }
@@ -82,10 +83,7 @@ public class File extends java.io.File {
             if(pathStream == null) {
                 throw new FileNotFoundException("Il percorso fornito non denota una directory.");
             }
-            pathStream.forEach(path -> {
-                //filePathList.add(path.toFile().getPath());
-                filePathList.add(path.toString());
-            });
+            pathStream.forEach(path -> filePathList.add(path.toString()));
         }
 
         //La lista appena ottenuta non è ordinata in alcun ordine specifico, quindi la devo ordinare in ordine crescente.

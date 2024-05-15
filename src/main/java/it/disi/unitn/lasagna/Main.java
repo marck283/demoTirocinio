@@ -40,15 +40,8 @@ public class Main {
 
     private static void cleanup(@NotNull File inputFile) throws IOException {
         Files.deleteIfExists(inputFile.toPath());
-        /*File audio = new File("./src/main/resources/it/disi/unitn/input/audio"),
-                video = new File("./src/main/resources/it/disi/unitn/input/video"),
-                direct = new File("./src/main/resources/it/disi/unitn/input/images"),
-                part = new File("./src/main/resources/it/disi/unitn/output/partial"),*/
+
         File main = new File("./src/main");
-        /*audio.removeSelf();
-        video.removeSelf();
-        direct.removeSelf();
-        part.removeSelf();*/
         main.removeSelf();
     }
 

@@ -20,8 +20,6 @@ class Audio {
 
     private Locale locale;
 
-    //private String description;
-
     /**
      * Checks if the given string is null or empty.
      * @param str The given string.
@@ -30,7 +28,7 @@ class Audio {
      * @throws NotEnoughArgumentsException If the given string is null or empty
      */
     private static void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
-        if(str == null || str.isEmpty()) {
+        if(StringExt.checkNullOrEmpty(str)) {
             throw new NotEnoughArgumentsException(msg, itmsg);
         }
     }
@@ -99,7 +97,6 @@ class Audio {
 
             locale = Locale.getDefault();
         } catch (IOException ex) {
-            //ex.printStackTrace();
             System.err.println(ex.getLocalizedMessage());
             System.exit(1);
         }
@@ -123,7 +120,6 @@ class Audio {
 
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
-            //System.err.println(input);
             SynthesizeSpeechResponse response =
                     textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
 
