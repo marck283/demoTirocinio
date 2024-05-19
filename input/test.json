@@ -7,39 +7,41 @@
   "streamCopy": "true",
   "pixelFormat": "yuvj420p",
   "voiceType": "female",
+  "fontFamily": "Serif",
+  "fontStyle": "italic",
   "array": [
     {
       "stats": [
         {
           "name": "name1",
           "value": "value1",
-          "font": "100f",
+          "fontDim": "100f",
           "print-x": 100,
           "print-y": 100
         },
         {
           "name": "name2",
           "value": "value2",
-          "font": "100f",
+          "fontDim": "100f",
           "print-x": 100,
           "print-y": 200
         },
         {
           "name": "name3",
           "value": "value3",
-          "font": "100f",
+          "fontDim": "100f",
           "print-x": 100,
           "print-y": 300
         }
       ],
       "entities": [{
         "text": "Roger Federer",
-        "font": "100f",
+        "fontDim": "100f",
         "print-x": 300,
         "print-y": 500
       }, {
         "text": "Rafael Nadal",
-        "font": "100f",
+        "fontDim": "100f",
         "print-x": 900,
         "print-y": 500
       }],

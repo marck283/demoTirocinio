@@ -36,8 +36,9 @@ public class AudioGenerator {
             throws InvalidArgumentException,
             NotEnoughArgumentsException {
         if(StringExt.checkNullOrEmpty(extension) || StringExt.checkNullOrEmpty(voiceType) || StringExt.checkNullOrEmpty(encoding)) {
-            throw new InvalidArgumentException("No parameter given to this method can be null or an empty string.",
-                    "Nessuno dei parametri forniti a questo metodo puo' essere null o una stringa vuota.");
+            throw new InvalidArgumentException("No parameter given to the audio generation method can be null or an empty " +
+                    "string.", "Nessuno dei parametri forniti al metodo di generazione dell'audio puo' essere null o una " +
+                    "stringa vuota.");
         }
         int i = 0;
         for(JsonElement e: arr) {
