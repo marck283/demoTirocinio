@@ -103,8 +103,8 @@ public class Main {
                 System.out.println("WIDTH: " + width);
                 System.out.println("HEIGHT: " + height);
 
-                //Aggiungere la possibilità di selezionare il font tramite
-                //json2Image.getFont(name, style, size);
+                //Seleziona il font richiesto dall'utente.
+                json2Image.getFontFromJSON(parser);
                 json2Image.generate(directory, imageExt, width, height, 1800000);
 
                 AudioGenerator generator = new AudioGenerator(array);

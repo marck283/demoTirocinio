@@ -73,7 +73,7 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api:2.0.13'
     implementation ('com.google.cloud:google-cloud-texttospeech:2.44.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.19-beta14' //Ultima versione
+    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.19.1' //Ultima versione
     implementation 'org.burningwave:core:12.65.1'
 
 }
