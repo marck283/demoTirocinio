@@ -12,7 +12,7 @@ import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
 import it.disi.unitn.json.jsonparser.JsonParser;
-import it.disi.unitn.videocreator.filtergraph.VideoSimpleFilterGraph;
+import it.disi.unitn.videocreator.filtergraph.VideoFilterGraph;
 import it.disi.unitn.videocreator.filtergraph.filterchain.VideoSimpleFilterChain;
 import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.format.Format;
 import it.disi.unitn.videocreator.filtergraph.filterchain.filters.videofilters.scale.Scale;
@@ -147,7 +147,7 @@ public class Main {
                                 String.valueOf(height), "auto", "bt709", "auto",
                                 "auto", "init", "0", "disable", 0);
 
-                        VideoSimpleFilterGraph vsfg = new VideoSimpleFilterGraph();
+                        VideoFilterGraph vsfg = new VideoFilterGraph();
                         VideoSimpleFilterChain vsfc = new VideoSimpleFilterChain();
                         Format format = creator.setFormat(new Format());
                         vsfc.addAllFilters(scale, format);
