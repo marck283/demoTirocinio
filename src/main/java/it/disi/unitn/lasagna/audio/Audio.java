@@ -120,6 +120,7 @@ class Audio {
 
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
+            //HTTPS request to service endpoint
             SynthesizeSpeechResponse response =
                     textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
 
