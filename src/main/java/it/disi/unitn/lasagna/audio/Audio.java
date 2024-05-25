@@ -4,12 +4,16 @@ import com.google.api.gax.rpc.ApiException;
 import com.google.cloud.texttospeech.v1.*;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.exceptions.InvalidArgumentException;
-import it.disi.unitn.exceptions.NotEnoughArgumentsException;
+import it.disi.unitn.exceptions.PermissionsException;
+import it.disi.unitn.lasagna.File;
+import it.disi.unitn.lasagna.audio.exceptions.AudioConversionException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 class Audio {
@@ -25,11 +29,11 @@ class Audio {
      * @param str The given string.
      * @param msg The English message if the result is "True".
      * @param itmsg The Italian message if the result is "True".
-     * @throws NotEnoughArgumentsException If the given string is null or empty
+     * @throws InvalidArgumentException If the given string is null or empty
      */
-    private static void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws NotEnoughArgumentsException {
+    private static void checkNullOrEmpty(String str, @NotNull String msg, @NotNull String itmsg) throws InvalidArgumentException {
         if(StringExt.checkNullOrEmpty(str)) {
-            throw new NotEnoughArgumentsException(msg, itmsg);
+            throw new InvalidArgumentException(msg, itmsg);
         }
     }
 
@@ -40,12 +44,11 @@ class Audio {
      * @param voiceType The given voice type. Can be either "male" or "female". Cannot be null or an empty string.
      * @param encoding The given audio encoding. Cannot be null or an empty string. Must be equal to "mp3", "linear16",
      *                 "ogg_opus", "mulaw" or "alaw" and must be compatible with the audio output format.
-     * @throws NotEnoughArgumentsException If any of the given parameters is null or an empty string.
-     * @throws InvalidArgumentException If the given voice type or the given encoding values are incompatible with the
-     * specification given above.
+     * @throws InvalidArgumentException If any of the given parameters is null or an empty string, or the given voice
+     * type or the given encoding values are incompatible with the specification given above.
      */
     public Audio(@NotNull String description, @NotNull String language, @NotNull String voiceType, @NotNull String encoding)
-            throws NotEnoughArgumentsException,
+            throws
             InvalidArgumentException {
         checkNullOrEmpty(description, "The given description cannot be null or an empty string.", "La descrizione " +
                 "fornita non puo' essere null o una stringa vuota.");
@@ -103,13 +106,35 @@ class Audio {
     }
 
     /**
+     * This method checks the reading and writing permissions on the folder identified by the given parameter.
+     * @param audioFileFolder The Path instance representing the folder.
+     * @throws PermissionsException If the user does not have reading or writing permissions on the given folder
+     */
+    private void checkReadWritePermissions(@NotNull Path audioFileFolder) throws PermissionsException {
+        try {
+            if(!Files.isReadable(audioFileFolder)) {
+                throw new PermissionsException("Cannot read the content of this directory.", "Non e' possibile " +
+                        "leggere il contenuto di questa directory.");
+            }
+            if(!Files.isWritable(audioFileFolder)) {
+                throw new PermissionsException("Cannot write to this directory.", "Non e' possibile scrivere su questa " +
+                        "directory.");
+            }
+        } catch(InvalidArgumentException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        }
+    }
+
+    /**
      * Generates the output audio file.
      * @param index The file index. This parameter is used to name the file.
      * @param extension The file's extension.
-     * @throws InvalidArgumentException If the given index is less than 0
-     * @throws NotEnoughArgumentsException If the given extension is null or an empty string
+     * @throws InvalidArgumentException If the given extension is null or an empty string, or the given index is less
+     *                                  than 0
+     * @throws AudioConversionException If the text-to-audio conversion did not succeed
      */
-    public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException, NotEnoughArgumentsException {
+    public void getOutput(int index, @NotNull String extension) throws InvalidArgumentException, AudioConversionException {
         checkNullOrEmpty(extension, "The file's extension cannot be null or an empty string.", "L'estensione " +
                 "del file non puo' essere null o una stringa vuota.");
 
@@ -127,8 +152,11 @@ class Audio {
             // Write the response to the output file.
             StringExt val = new StringExt(String.valueOf(index));
             val.padStart();
-            try (OutputStream out = new FileOutputStream("./src/main/resources/it/disi/unitn/input/audio/" +
-                    val.getVal() + "." + extension)) {
+
+            String audioFileFolderPath = "./src/main/resources/it/disi/unitn/input/audio";
+            try (OutputStream out = new FileOutputStream(audioFileFolderPath + "/" + val.getVal() + "." + extension)) {
+                Path audioFileFolder = new File(audioFileFolderPath).toPath();
+                checkReadWritePermissions(audioFileFolder);
                 out.write(response.getAudioContent().toByteArray());
                 if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
                     System.out.println("Contenuto audio scritto sul file \"" + val.getVal() + "." + extension + "\"");
@@ -140,15 +168,7 @@ class Audio {
                 System.exit(1);
             }
         } catch(ApiException ex) {
-            if(locale == Locale.ITALIAN || locale == Locale.ITALY) {
-                System.err.println("Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
-                        " Internet per eventuali problemi. Codice errore: " + ex.getStatusCode() + "; ragione: " +
-                        ex.getMessage());
-            } else {
-                System.err.println("Audio to text conversion failed. Please check your Internet connection. Error code: "
-                + ex.getStatusCode() + "; cause: " + ex.getMessage());
-            }
-            System.exit(1);
+            throw new AudioConversionException(ex);
         }
     }
 }

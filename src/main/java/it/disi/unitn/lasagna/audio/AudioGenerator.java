@@ -3,7 +3,8 @@ package it.disi.unitn.lasagna.audio;
 import com.google.gson.*;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.exceptions.InvalidArgumentException;
-import it.disi.unitn.exceptions.NotEnoughArgumentsException;
+import it.disi.unitn.exceptions.InvalidJSONFileException;
+import it.disi.unitn.lasagna.audio.exceptions.AudioConversionException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -29,12 +30,13 @@ public class AudioGenerator {
      * final video.
      * @throws InvalidArgumentException If the voice type or the encoding values are neither null nor an empty string,
      * but they are not compatible with the values required by te above specification
-     * @throws NotEnoughArgumentsException If the "text-to-speech" or the "language" options contain null or empty values,
-     * or if the voice type or the encoding values are null or an empty string
+     * @throws AudioConversionException If the text-to-audio conversion did not succeed
+     * @throws InvalidJSONFileException If the JSON file given as input to this program does not contain any element
+     * called "text-language" that is neither null nor an empty string, or it does not contain any element called
+     * "text-to-speech" that is neither null nor an empty string
      */
     public int generateAudio(@NotNull String extension, @NotNull String voiceType, @NotNull String encoding)
-            throws InvalidArgumentException,
-            NotEnoughArgumentsException {
+            throws InvalidArgumentException, AudioConversionException, InvalidJSONFileException {
         if(StringExt.checkNullOrEmpty(extension) || StringExt.checkNullOrEmpty(voiceType) || StringExt.checkNullOrEmpty(encoding)) {
             throw new InvalidArgumentException("No parameter given to the audio generation method can be null or an empty " +
                     "string.", "Nessuno dei parametri forniti al metodo di generazione dell'audio puo' essere null o una " +
