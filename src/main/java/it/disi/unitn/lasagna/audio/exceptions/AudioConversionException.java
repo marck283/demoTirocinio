@@ -27,9 +27,9 @@ public class AudioConversionException extends Exception {
                     "L'istanza della classe ApiException fornita a questo costruttore non puo' essere null.");
         }
         this.msg = "Audio to text conversion failed. Please check your Internet connection. Error code: "
-                + ex.getStatusCode() + "; cause: " + ex.getMessage();
+                + ex.getStatusCode() + ". Cause: " + ex.getMessage();
         this.itmsg = "Conversione testo in audio fallita. Si prega di controllare la propria connessione ad" +
-                " Internet per eventuali problemi. Codice errore: " + ex.getStatusCode() + "; ragione: " +
+                " Internet per eventuali problemi. Codice errore: " + ex.getStatusCode() + ". Causa: " +
                 ex.getMessage();
         l = Locale.getDefault();
     }
