@@ -7,7 +7,6 @@ import it.disi.unitn.StringExt;
 import it.disi.unitn.videocreator.TracksMerger;
 import it.disi.unitn.videocreator.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
-import it.disi.unitn.exceptions.NotEnoughArgumentsException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
 import it.disi.unitn.lasagna.audio.AudioGenerator;
@@ -183,7 +182,7 @@ public class Main {
                     File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
                     List<String> ofileList = outputDir.getFileList(); //Ottiene la lista ordinata del contenuto della cartella
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
-                } catch (NotEnoughArgumentsException | InvalidArgumentException |
+                } catch (InvalidArgumentException |
                          UnsupportedOperatingSystemException | IOException | RuntimeException ex) {
                     //ex.printStackTrace();
                     System.err.println(ex.getMessage());
