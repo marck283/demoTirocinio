@@ -3,7 +3,6 @@ package it.disi.unitn.lasagna.audio;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.disi.unitn.StringExt;
-import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.InvalidJSONFileException;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,12 +15,7 @@ class Description {
     }
 
     private static void throwInvalidJSONFileException(@NotNull String msg, @NotNull String itmsg) throws InvalidJSONFileException {
-        try {
-            throw new InvalidJSONFileException(msg, itmsg);
-        } catch(InvalidArgumentException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(1);
-        }
+        throw new InvalidJSONFileException(msg, itmsg);
     }
 
     /**

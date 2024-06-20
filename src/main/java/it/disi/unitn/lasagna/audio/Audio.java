@@ -146,8 +146,15 @@ class Audio {
         // Perform the text-to-speech request on the text input with the selected voice parameters and audio file type
         try {
             //HTTPS request to service endpoint
-            SynthesizeSpeechResponse response =
-                    textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
+            SynthesizeSpeechRequest.Builder builder = SynthesizeSpeechRequest.newBuilder();
+            SynthesizeSpeechRequest req = builder
+                    .setInput(input)
+                    .setVoice(voice)
+                    .setAudioConfig(audioConfig)
+                    .build();
+            /*SynthesizeSpeechResponse response =
+                    textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);*/
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(req);
 
             // Write the response to the output file.
             StringExt val = new StringExt(String.valueOf(index));

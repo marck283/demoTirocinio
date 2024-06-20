@@ -8,11 +8,10 @@ buildscript {
 }
 
 plugins {
-    id 'java'
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-    //id 'cpp'
+    alias libs.plugins.java
+    alias libs.plugins.com.google.cloud.artifactregistry.gradle.plugin
+    alias libs.plugins.application
+    alias libs.plugins.com.github.johnrengelman.shadow
 }
 
 application {
@@ -61,19 +60,19 @@ shadowJar {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:24.1.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    implementation libs.annotations
+    testImplementation libs.jupiter.api
+    testRuntimeOnly libs.jupiter.engine
 
-    implementation 'commons-io:commons-io:2.16.1'
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'commons-cli:commons-cli:1.8.0'
-    implementation 'org.apache.commons:commons-exec:1.4.0'
+    implementation libs.commons.io
+    implementation libs.commons.lang3
+    implementation libs.commons.cli
+    implementation libs.commons.exec
 
-    implementation 'org.slf4j:slf4j-api:2.0.13'
-    implementation ('com.google.cloud:google-cloud-texttospeech:2.45.0')
-    implementation 'it.disi.unitn.ffmpeg:ffmpeg-java-id:1.1.24' //Ultima versione
-    implementation 'org.burningwave:core:12.65.1'
+    implementation libs.slf4j.api
+    implementation libs.google.cloud.texttospeech
+    implementation libs.ffmpeg.java.id //Ultima versione
+    implementation libs.org.burningwave.core
 
 }
 
