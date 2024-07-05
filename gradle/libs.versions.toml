@@ -14,9 +14,9 @@ application = { id = "application" }
 
 annotations = "org.jetbrains:annotations:24.1.0"
 
-jupiter-api = "org.junit.jupiter:junit-jupiter-api:5.10.2"
+jupiter-api = "org.junit.jupiter:junit-jupiter-api:5.10.3"
 
-jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.10.2"
+jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.10.3"
 
 commons-io = "commons-io:commons-io:2.16.1"
 
@@ -28,8 +28,8 @@ commons-exec = "org.apache.commons:commons-exec:1.4.0"
 
 slf4j-api = "org.slf4j:slf4j-api:2.0.13"
 
-google-cloud-texttospeech = "com.google.cloud:google-cloud-texttospeech:2.46.0"
+google-cloud-texttospeech = "com.google.cloud:google-cloud-texttospeech:2.47.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.3"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.5"
 
 org-burningwave-core = "org.burningwave:core:12.65.1"
