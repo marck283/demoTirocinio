@@ -20,7 +20,7 @@ jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.10.3"
 
 commons-io = "commons-io:commons-io:2.16.1"
 
-commons-lang3 = "org.apache.commons:commons-lang3:3.14.0"
+commons-lang3 = "org.apache.commons:commons-lang3:3.15.0"
 
 commons-cli = "commons-cli:commons-cli:1.8.0"
 
