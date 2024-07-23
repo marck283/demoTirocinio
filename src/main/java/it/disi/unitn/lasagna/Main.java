@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import it.disi.unitn.FFMpeg;
 import it.disi.unitn.FFMpegBuilder;
 import it.disi.unitn.StringExt;
+import it.disi.unitn.lasagna.file.File;
 import it.disi.unitn.videocreator.TracksMerger;
 import it.disi.unitn.videocreator.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
@@ -37,10 +38,10 @@ public class Main {
         return Arrays.stream(args).anyMatch(s -> s == null || s.isEmpty());
     }
 
-    private static void cleanup(@NotNull File inputFile) throws IOException {
+    private static void cleanup(@NotNull it.disi.unitn.lasagna.file.File inputFile) throws IOException {
         Files.deleteIfExists(inputFile.toPath());
 
-        File main = new File("./src/main");
+        it.disi.unitn.lasagna.file.File main = new it.disi.unitn.lasagna.file.File("./src/main");
         main.removeSelf();
     }
 
@@ -54,7 +55,7 @@ public class Main {
                     " per la generazione delle immagini. L'eventuale terzo e quarto argomento rappresentano, rispettivamente," +
                     " la larghezza e l'altezza delle immagini da produrre.");
         } else {
-            File f = new File(args[0]);
+            it.disi.unitn.lasagna.file.File f = new it.disi.unitn.lasagna.file.File(args[0]);
 
             //La conversione in path assoluto è necessaria perché il file di esempio non è nel classpath
             //Per ragioni di sicurezza, utilizziamo Path.toRealPath() per ritornare il Path vero e proprio del file perché
@@ -80,12 +81,12 @@ public class Main {
                         pixelFormat = parser.getString("pixelFormat"),
                         streamCopy = parser.getString("streamCopy");
 
-                File inputFile = new File(tempFile);
+                it.disi.unitn.lasagna.file.File inputFile = new it.disi.unitn.lasagna.file.File(tempFile);
                 if(!inputFile.exists()) {
                     Files.createFile(inputFile.toPath());
                 }
 
-                File.makeDirs(audioDir, directory, videoDir, partial);
+                it.disi.unitn.lasagna.file.File.makeDirs(audioDir, directory, videoDir, partial);
 
                 JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
@@ -179,7 +180,7 @@ public class Main {
                     unitnMerger = builder.newTracksMerger("./output." + videoExt, videoDir, videoExt);
                     unitnMerger.streamCopy(true);
 
-                    File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
+                    it.disi.unitn.lasagna.file.File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
                     List<String> ofileList = outputDir.getFileList(); //Ottiene la lista ordinata del contenuto della cartella
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile);
                 } catch (InvalidArgumentException |

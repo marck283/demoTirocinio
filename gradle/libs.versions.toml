@@ -30,6 +30,6 @@ slf4j-api = "org.slf4j:slf4j-api:2.0.13"
 
 google-cloud-texttospeech = "com.google.cloud:google-cloud-texttospeech:2.47.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.5"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.6-alpha4"
 
 org-burningwave-core = "org.burningwave:core:12.65.1"
