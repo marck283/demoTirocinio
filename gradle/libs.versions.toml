@@ -28,8 +28,8 @@ commons-exec = "org.apache.commons:commons-exec:1.4.0"
 
 slf4j-api = "org.slf4j:slf4j-api:2.0.13"
 
-google-cloud-texttospeech = "com.google.cloud:google-cloud-texttospeech:2.47.0"
+com-google-gson = "com.google.code.gson:gson:2.11.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.6-alpha4"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.6-alpha6"
 
 org-burningwave-core = "org.burningwave:core:12.65.1"

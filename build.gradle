@@ -70,7 +70,7 @@ dependencies {
     implementation libs.commons.exec
 
     implementation libs.slf4j.api
-    implementation libs.google.cloud.texttospeech
+    implementation libs.com.google.gson
     implementation libs.ffmpeg.java.id //Ultima versione
     implementation libs.org.burningwave.core
 
