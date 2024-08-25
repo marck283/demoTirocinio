@@ -1,4 +1,4 @@
-package it.disi.unitn.lasagna;
+package it.disi.unitn.lasagna.file;
 
 import it.disi.unitn.StringExt;
 import org.jetbrains.annotations.NotNull;
@@ -7,28 +7,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class File extends java.io.File {
+public class File extends it.disi.unitn.lasagna.File {
 
     private final String pathname;
 
     public File(@NotNull String pathname) {
         super(pathname);
         this.pathname = pathname;
-    }
-
-    /**
-     * Crea un'istanza della classe Path risolvendo il pathnme e il file passati.
-     * @param path Il pathname da utilizzare
-     * @param filename Il nome del file da risolvere
-     * @return Un'istanza di Path che rappresenta il file passato come parametro.
-     */
-    private static @NotNull Path getPath(String path, String filename) {
-        Path path1 = Paths.get(path);
-        return path1.resolve(filename);
     }
 
     /**
