@@ -20,7 +20,7 @@ jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.11.0"
 
 commons-io = "commons-io:commons-io:2.16.1"
 
-commons-lang3 = "org.apache.commons:commons-lang3:3.16.0"
+commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
 
 commons-cli = "commons-cli:commons-cli:1.9.0"
 
@@ -30,6 +30,6 @@ slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
 com-google-gson = "com.google.code.gson:gson:2.11.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.6-alpha6"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.7"
 
-org-burningwave-core = "org.burningwave:core:12.65.1"
+org-burningwave-core = "org.burningwave:core:12.65.2"
