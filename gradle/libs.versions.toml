@@ -4,7 +4,7 @@
 
 com-google-cloud-artifactregistry-gradle-plugin = { id = "com.google.cloud.artifactregistry.gradle-plugin", version = "2.2.0" }
 
-com-github-johnrengelman-shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+com-github-johnrengelman-shadow = { id = "com.gradleup.shadow", version = "8.3.1" }
 
 java = { id = "java" }
 
@@ -30,6 +30,6 @@ slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
 com-google-gson = "com.google.code.gson:gson:2.11.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.7"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.8"
 
 org-burningwave-core = "org.burningwave:core:12.65.2"

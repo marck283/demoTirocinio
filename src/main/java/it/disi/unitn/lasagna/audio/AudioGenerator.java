@@ -4,8 +4,8 @@ import com.google.gson.*;
 import it.disi.unitn.StringExt;
 import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.InvalidJSONFileException;
-import it.disi.unitn.lasagna.audio.audiocreator.Audio;
-import it.disi.unitn.lasagna.audio.exceptions.AudioConversionException;
+import it.disi.unitn.exceptions.AudioConversionException;
+import it.disi.unitn.lasagna.audiocreator.Audio;
 import org.jetbrains.annotations.NotNull;
 
 /**
