@@ -6,6 +6,7 @@ import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.InvalidJSONFileException;
 import it.disi.unitn.exceptions.AudioConversionException;
 import it.disi.unitn.lasagna.audiocreator.Audio;
+import it.disi.unitn.lasagna.audiocreator.Description;
 import org.jetbrains.annotations.NotNull;
 
 /**
