@@ -25,6 +25,7 @@ public class File extends it.disi.unitn.lasagna.File {
      * @throws Exception Quando almeno uno dei valori passati come argomento &egrave; null o, se l'utente sta operando
      * su un sistema Linux, il processo di creazione di ua cartella fallisce.
      */
+    @Deprecated
     public static void makeDirs(@NotNull String @NotNull ... dirPaths)
             throws Exception {
         if(dirPaths == null || Arrays.stream(dirPaths).anyMatch(StringExt::checkNullOrEmpty)) {
@@ -43,6 +44,7 @@ public class File extends it.disi.unitn.lasagna.File {
      * @throws IllegalArgumentException Quando almeno un argomento è null
      * @throws IOException se occorre un errore I/O
      */
+    @Deprecated
     public void removeSelf() throws IllegalArgumentException, IOException {
         try(Stream<Path> walk = Files.walk(getPath(pathname, ""))) {
             walk.sorted(Comparator.reverseOrder()).forEach(path -> {
@@ -61,6 +63,7 @@ public class File extends it.disi.unitn.lasagna.File {
      * @return La lista dei path dei file interni alla cartella associata a questa istanza di File
      * @throws IOException Se si verifica un errore di I/O
      */
+    @Deprecated
     public List<String> getFileList() throws IOException {
         if(!Files.isDirectory(getPath(getPath(), ""))) {
             throw new FileNotFoundException("Il percorso fornito non denota una directory.");
