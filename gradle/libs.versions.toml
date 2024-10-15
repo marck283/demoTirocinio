@@ -12,11 +12,11 @@ application = { id = "application" }
 
 [libraries]
 
-annotations = "org.jetbrains:annotations:25.0.0"
+annotations = "org.jetbrains:annotations:26.0.1"
 
-jupiter-api = "org.junit.jupiter:junit-jupiter-api:5.11.1"
+jupiter-api = "org.junit.jupiter:junit-jupiter-api:5.11.2"
 
-jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.11.1"
+jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.11.2"
 
 commons-io = "commons-io:commons-io:2.17.0"
 
@@ -30,6 +30,6 @@ slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
 com-google-gson = "com.google.code.gson:gson:2.11.0"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.9-alpha4"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.9-beta1"
 
 org-burningwave-core = "org.burningwave:core:12.65.2"
