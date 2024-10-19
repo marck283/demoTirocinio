@@ -40,7 +40,7 @@ public class Main {
     private static void cleanup(@NotNull File inputFile) throws IOException {
         Files.deleteIfExists(inputFile.toPath());
 
-        File main = new File("./src/main");
+        MyFile main = new MyFile("./src/main");
         main.removeSelf();
     }
 
@@ -85,7 +85,7 @@ public class Main {
                     Files.createFile(inputFile.toPath());
                 }
 
-                File.makeDirs(audioDir, directory, videoDir, partial);
+                MyFile.makeDirs(audioDir, directory, videoDir, partial);
 
                 JSONToImage json2Image = new JSONToImage(f.getPath(), Boolean.parseBoolean(args[1]));
                 String imageExt = json2Image.getMIME(array.get(0).getAsJsonObject());
@@ -179,7 +179,7 @@ public class Main {
                     unitnMerger = builder.newTracksMerger("./output." + videoExt, videoDir, videoExt);
                     unitnMerger.streamCopy(true);
 
-                    File outputDir = new File("./src/main/resources/it/disi/unitn/output/partial");
+                    MyFile outputDir = new MyFile("./src/main/resources/it/disi/unitn/output/partial");
                     List<String> ofileList = outputDir.getFileList(); //Ottiene la lista ordinata del contenuto della cartella
                     unitnMerger.mergeVideos(1L, TimeUnit.MINUTES, ofileList, tempFile, "./");
                 } catch (InvalidArgumentException |
