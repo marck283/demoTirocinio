@@ -111,7 +111,6 @@ public class Main {
                 if (SystemUtils.IS_OS_WINDOWS) {
                     command = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
                     ffmpegFilePath = "\"./lib/ffmpeg-fullbuild/bin/ffmpeg.exe\"";
-                    //throw new UnsupportedOperatingSystemException();
                 } else {
                     command = "ffmpeg";
                     ffmpegFilePath = null;
