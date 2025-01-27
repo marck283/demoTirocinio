@@ -2,7 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
 }
@@ -19,20 +19,20 @@ application {
     //applicationDefaultJvmArgs = ["-Djava.library.path=" + file("${buildDir}/libs/ffcodec/shared").absolutePath]
 }
 
-group 'it.disi.unitn.lasagna'
-version '1.0'
+group = 'it.disi.unitn.lasagna'
+version = '1.0'
 
 repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url "artifactregistry://europe-west8-maven.pkg.dev/tirocinio-380209/ffmpeg-java"
+        url = "artifactregistry://europe-west8-maven.pkg.dev/tirocinio-380209/ffmpeg-java"
     }
 
     exclusiveContent {
         forRepository {
             maven {
-                url 'https://mlt.jfrog.io/artifactory/mlt-mvn-releases-local'
+                url = 'https://mlt.jfrog.io/artifactory/mlt-mvn-releases-local'
             }
         }
         filter {
@@ -44,7 +44,7 @@ repositories {
 jar {
     manifest {
         attributes "Main-Class": "it.disi.unitn.lasagna.Main"
-        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 
     from {

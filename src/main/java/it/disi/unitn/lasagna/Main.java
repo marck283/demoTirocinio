@@ -9,7 +9,7 @@ import it.disi.unitn.videocreator.VideoCreator;
 import it.disi.unitn.exceptions.InvalidArgumentException;
 import it.disi.unitn.exceptions.UnsupportedOperatingSystemException;
 import it.disi.unitn.json.JSONToImage;
-import it.disi.unitn.lasagna.audio.AudioGenerator;
+import it.disi.unitn.lasagna.audiocreator.AudioGenerator;
 import it.disi.unitn.json.jsonparser.JsonParser;
 import it.disi.unitn.videocreator.filtergraph.VideoFilterGraph;
 import it.disi.unitn.videocreator.filtergraph.filterchain.VideoSimpleFilterChain;
