@@ -18,18 +18,14 @@ jupiter-api = "org.junit.jupiter:junit-jupiter-api:5.11.4"
 
 jupiter_engine = "org.junit.jupiter:junit-jupiter-engine:5.11.4"
 
-commons-io = "commons-io:commons-io:2.18.0"
-
 commons-lang3 = "org.apache.commons:commons-lang3:3.17.0"
-
-commons-cli = "commons-cli:commons-cli:1.9.0"
 
 commons-exec = "org.apache.commons:commons-exec:1.4.0"
 
 slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
-com-google-gson = "com.google.code.gson:gson:2.11.0"
+com-google-gson = "com.google.code.gson:gson:2.12.1"
 
-ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.9-beta2.9"
+ffmpeg-java-id = "it.disi.unitn.ffmpeg:ffmpeg-java-id:1.2.9-beta3.0"
 
 org-burningwave-core = "org.burningwave:core:12.65.2"

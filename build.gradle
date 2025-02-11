@@ -64,9 +64,7 @@ dependencies {
     testImplementation libs.jupiter.api
     testRuntimeOnly libs.jupiter.engine
 
-    implementation libs.commons.io
     implementation libs.commons.lang3
-    implementation libs.commons.cli
     implementation libs.commons.exec
 
     implementation libs.slf4j.api
