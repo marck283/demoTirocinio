@@ -103,7 +103,6 @@ public class Main {
                 System.out.println("HEIGHT: " + height);
 
                 //Seleziona il font richiesto dall'utente.
-                json2Image.getFontFromJSON(parser);
                 json2Image.generate(directory, imageExt, width, height, 1800000);
 
                 AudioGenerator generator = new AudioGenerator(array);
@@ -141,7 +140,7 @@ public class Main {
                         creator.setPixelFormat(pixelFormat); //Formato dei pixel
 
                         Scale scale = new Scale();
-                        creator.setScaleParams(true, scale, new Bicubic(0.3333, 0.3333), String.valueOf(width),
+                        creator.setScaleParams(false, scale, new Bicubic(0.3333, 0.3333), String.valueOf(width),
                                 String.valueOf(height), "auto", "bt709", "auto",
                                 "auto", "init", "0", "disable", 0);
 
