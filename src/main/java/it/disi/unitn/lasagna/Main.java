@@ -66,7 +66,15 @@ public class Main {
             //La vulnerabilità si presenta perché getCanonicalPath(), così come toAbsolutePath(), non rimuove le sequenze
             //di escaping come "../". Si veda qui (https://owasp.org/www-community/attacks/Path_Traversal) per maggiori
             //informazioni su questa vulnerabilità.
+            if(!args[0].endsWith(".json")) {
+                System.err.println("Illegal file extension. Please provide a valid JSON file.");
+                System.exit(1);
+            }
             Path p = Paths.get(args[0]).toRealPath();
+            if(!p.startsWith(Paths.get("./input").toAbsolutePath())) {
+                System.err.println("Incorrect JSON file folder. Please provide a valid JSON file inside the ./input directory.");
+                System.exit(2);
+            }
             try(Reader reader = Files.newBufferedReader(p)) {
                 JsonParser parser = new JsonParser(reader);
                 JsonArray array = parser.getJsonArray("array");
